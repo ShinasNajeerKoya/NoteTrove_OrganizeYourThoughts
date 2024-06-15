@@ -16,7 +16,7 @@ import 'package:note_app/widgets/form_widget.dart';
 import 'package:note_app/widgets/single_note_widget.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -25,13 +25,11 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   void deleteNoteErrorHandler(NoteModel noteIndex) {
     try {
-      // try to check if the id is missing or got corrupted in the db,
       if (noteIndex.id == null || noteIndex.id!.isEmpty) {
-        toast(message: "Selected notes ID is missing or corrupted in the database.");
-        throw Exception("Selected notes ID is missing or corrupted in the database.");
+        toast(message: "Selected note's ID is missing or corrupted in the database.");
+        throw Exception("Selected note's ID is missing or corrupted in the database.");
       }
 
-      // if there are no issues then continue with the note deletion
       DatabaseHandler.deleteNote(noteIndex.id!);
     } catch (e) {
       log("Error: ${e.toString()}");
@@ -45,174 +43,242 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
       backgroundColor: Colors.grey.shade900,
-      body: Container(
-        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-        height: height,
-        width: width,
-        child: Stack(
+      body: SafeArea(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              child: SafeArea(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Container(
-                          height: 75,
-                          width: 75,
-                          decoration: BoxDecoration(
-                            color: MyColors.backGroundDarkGrey2,
-                            shape: BoxShape.circle,
-                          ),
-                          child: Icon(
-                            CupertinoIcons.square_grid_2x2,
-                            size: 30,
-                            color: Colors.grey.shade300,
-                          ),
-                        ),
-                      ],
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Container(
+                    height: 75,
+                    width: 75,
+                    decoration: BoxDecoration(
+                      color: MyColors.backGroundDarkGrey2,
+                      shape: BoxShape.circle,
                     ),
-                    MyText(
-                      "My\nNotes",
-                      style: TextStyle(color: Colors.white, fontSize: 70),
+                    child: Icon(
+                      CupertinoIcons.square_grid_2x2,
+                      size: 30,
+                      color: Colors.grey.shade300,
                     ),
-                    SizedBox(height: 20),
-                    Container(
-                      height: 70,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: 5,
-                        itemBuilder: (context, index) => GestureDetector(
-                          onTap: () {
-                            print("ontap pressed");
-                          },
-                          child: Container(
-                            alignment: Alignment.center,
-                            width: 120,
-                            margin: EdgeInsets.only(right: 10),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(75),
-                              border: Border.all(width: 1, color: Colors.white),
-                            ),
-                            child: MyText(
-                              "All",
-                              style: TextStyle(fontSize: 28, color: Colors.white),
-                            ),
-                          ),
-                        ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: MyText(
+                "My\nNotes",
+                style: TextStyle(color: Colors.white, fontSize: 70),
+              ),
+            ),
+            SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: Container(
+                height: 70,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: 5, // Replace with your actual categories count
+                  itemBuilder: (context, index) => GestureDetector(
+                    onTap: () {
+                      print("Category tapped: $index");
+                    },
+                    child: Container(
+                      alignment: Alignment.center,
+                      width: 120,
+                      margin: EdgeInsets.only(right: 10),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(75),
+                        border: Border.all(width: 1, color: Colors.white),
+                      ),
+                      child: MyText(
+                        "All", // Replace with category text
+                        style: TextStyle(fontSize: 28, color: Colors.white),
                       ),
                     ),
-                    SizedBox(
-                      height: 20,
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(height: 20),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: StreamBuilder<List<NoteModel>>(
+                  stream: DatabaseHandler.getNotes(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(child: CircularProgressIndicator());
+                    }
+
+                    if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                      return Center(
+                        child: Text(
+                          "No notes available",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      );
+                    }
+
+                    final notes = snapshot.data!;
+                    return GridView.builder(
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 10,
+                        mainAxisSpacing: 10,
+                        childAspectRatio: 0.74,
+                      ),
+                      itemCount: notes.length,
+                      itemBuilder: (context, index) {
+                        return SingleNoteContainerHomePage(
+                          title: notes[index].title,
+                          body: notes[index].body,
+                          backgroundColor: notes[index].color,
+                          heartIcon: CupertinoIcons.heart,
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => EditNotePage(
+                                  height: height,
+                                  width: width,
+                                  noteModel: notes[index],
+                                ),
+                              ),
+                            );
+                          },
+                          onLongPress: () {
+                            showDialogBoxWidget(
+                              context,
+                              height: 230,
+                              width: width,
+                              title: "Are you sure you want\nto delete this note?",
+                              onTapYes: () {
+                                deleteNoteErrorHandler(notes[index]);
+                                Navigator.pop(context);
+                              },
+                            );
+                          },
+                        );
+                      },
+                    );
+                  },
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.black54,
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => CreateNotePage(
+                height: height,
+                width: width,
+              ),
+            ),
+          );
+        },
+        child: Icon(
+          Icons.add,
+          color: Colors.white,
+          size: 30,
+        ),
+      ),
+    );
+  }
+}
+
+class SingleNoteContainerHomePage extends StatelessWidget {
+  final String? title;
+  final String? body;
+  final int? backgroundColor;
+  final IconData heartIcon;
+  final VoidCallback? onTap;
+  final VoidCallback? onLongPress;
+
+  const SingleNoteContainerHomePage({
+    super.key,
+    required this.title,
+    required this.body,
+    required this.backgroundColor,
+    required this.heartIcon,
+    this.onTap,
+    this.onLongPress,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      onLongPress: onLongPress,
+      child: Container(
+        padding: EdgeInsets.only(top: 5, left: 12, right: 10, bottom: 20),
+        decoration: BoxDecoration(
+          color: Color(backgroundColor!),
+          borderRadius: BorderRadius.only(
+            topRight: Radius.circular(60),
+            bottomLeft: Radius.circular(60),
+          ),
+        ),
+        child: Column(
+          children: [
+            Icon(Icons.linear_scale),
+            SizedBox(
+              height: 10,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                SizedBox(
+                  height: 50,
+                  width: 80,
+                  child: MyText(
+                    title!,
+                    // "Plan for the day",
+                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 2,
+                  ),
+                ),
+                Container(
+                  height: 60,
+                  width: 60,
+                  decoration: BoxDecoration(
+                    color: MyColors.black8,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    heartIcon,
+                    size: 26,
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Expanded(
+              child: Container(
+                margin: EdgeInsets.only(
+                  left: 10,
+                ),
+                decoration: BoxDecoration(
+                    // color: Colors.green,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          height: height * 0.3,
-                          width: (width / 2) - 22.5,
-                          padding: EdgeInsets.symmetric(vertical: 3, horizontal: 11),
-                          decoration: BoxDecoration(
-                            color: Colors.red.withOpacity(0.8),
-                            borderRadius: BorderRadius.only(
-                              topRight: Radius.circular(60),
-                              bottomRight: Radius.circular(60),
-                              bottomLeft: Radius.circular(60),
-                            ),
-                          ),
-                          child: Column(
-                            children: [
-                              Icon(Icons.linear_scale),
-                              SizedBox(
-                                height: 15,
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Container(
-                                    height: 50,
-                                    width: 90,
-                                    child: MyText(
-                                      "Plan for the day",
-                                      style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
-                                      overflow: TextOverflow.ellipsis,
-                                      maxLines: 2,
-                                    ),
-                                  ),
-                                  Container(
-                                    height: 60,
-                                    width: 60,
-                                    decoration: BoxDecoration(
-                                      color: MyColors.black8,
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: Icon(
-                                      CupertinoIcons.heart,
-                                      size: 26,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                height: 20,
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          height: height * 0.3,
-                          width: (width / 2) - 22.5,
-                          padding: EdgeInsets.symmetric(vertical: 3, horizontal: 11),
-                          decoration: BoxDecoration(
-                            color: Colors.yellow.withOpacity(0.9),
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(60),
-                              topRight: Radius.circular(60),
-                              bottomLeft: Radius.circular(60),
-                            ),
-                          ),
-                          child: Column(
-                            children: [
-                              Icon(Icons.linear_scale),
-                              SizedBox(
-                                height: 15,
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Container(
-                                    height: 50,
-                                    width: 90,
-                                    child: MyText(
-                                      "Plan for the day",
-                                      style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
-                                      overflow: TextOverflow.ellipsis,
-                                      maxLines: 2,
-                                    ),
-                                  ),
-                                  Container(
-                                    height: 60,
-                                    width: 60,
-                                    decoration: BoxDecoration(
-                                      color: MyColors.black8,
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: Icon(
-                                      CupertinoIcons.heart,
-                                      size: 26,
-                                    ),
-                                  ),
-                                ],
-                              )
-                            ],
-                          ),
-                        ),
-                      ],
-                    )
-                  ],
+                child: MyText(
+                  body!,
+                  // "sahdgas jhgdas body of the note,fsdf sdfsd sdf sdfsd rgre refwe write anythiong here dghasd f the note, write anythiong here dghasd suayhdasjk suayhdasjk asiuasdas duahsd"
+                  style: TextStyle(fontSize: 15, color: Colors.black38),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 6,
                 ),
               ),
             )
@@ -220,107 +286,5 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
     );
-
-    // return Scaffold(
-    //   backgroundColor: MyColors.darkBackroundColor,
-    //   appBar: AppBar(
-    //     elevation: 0,
-    //     backgroundColor: MyColors.darkBackroundColor,
-    //     title: Text(
-    //       "Notes",
-    //       style: TextStyle(fontSize: 40),
-    //     ),
-    //     actions: [
-    //       Padding(
-    //         padding: EdgeInsets.only(right: 10),
-    //         child: Row(
-    //           children: [
-    //             ButtonWidget(icon: Icons.search),
-    //             SizedBox(width: 10),
-    //             ButtonWidget(icon: Icons.info_outline)
-    //           ],
-    //         ),
-    //       )
-    //     ],
-    //   ),
-    //   body: StreamBuilder<List<NoteModel>>(
-    //     stream: DatabaseHandler.getNotes(),
-    //     builder: (context, snapshots) {
-    //       if (snapshots.connectionState == ConnectionState.waiting) {
-    //         return Center(
-    //           child: CircularProgressIndicator(),
-    //         );
-    //       }
-    //       if (snapshots.hasData == false) {
-    //         return Center(
-    //           child: Text(" No data in database"),
-    //         );
-    //       }
-    //       if (snapshots.data!.isEmpty) {
-    //         return Center(
-    //           child: Text(
-    //             "Data is empty, create new notes / add image for this",
-    //             style: TextStyle(color: Colors.white),
-    //           ),
-    //         );
-    //       }
-    //       if (snapshots.hasData) {
-    //         final notes = snapshots.data;
-    //         return ListView.builder(
-    //             itemCount: notes!.length,
-    //             itemBuilder: (context, index) {
-    //               return SingleNoteWidget(
-    //                 width: width,
-    //                 title: notes[index].title,
-    //                 noteBody: notes[index].body,
-    //                 // color: 4294967295,
-    //                 color: notes[index].color,
-    //                 onTap: () {
-    //                   Navigator.push(
-    //                       context,
-    //                       MaterialPageRoute(
-    //                           builder: (context) => EditNotePage(
-    //                                 height: height,
-    //                                 width: width,
-    //                                 noteModel: notes[index],
-    //                               )));
-    //                 },
-    //                 onLongPress: () {
-    //                   showDialogBoxWidget(context,
-    //                       height: 230,
-    //                       width: width,
-    //                       title: "Are you sure you want\nto delete this note?", onTapYes: () {
-    //                     deleteNoteErrorHandler(notes[index]);
-    //                     Navigator.pop(context);
-    //                   });
-    //                 },
-    //               );
-    //             });
-    //       }
-    //
-    //       //this return for the  builder , or else it might be error
-    //       return Center(
-    //         child: CircularProgressIndicator(),
-    //       );
-    //     },
-    //   ),
-    //   floatingActionButton: FloatingActionButton(
-    //     backgroundColor: Colors.black54,
-    //     onPressed: () {
-    //       Navigator.push(
-    //           context,
-    //           MaterialPageRoute(
-    //               builder: (context) => CreateNotePage(
-    //                     height: height,
-    //                     width: width,
-    //                   )));
-    //     },
-    //     child: Icon(
-    //       Icons.add,
-    //       color: Colors.white,
-    //       size: 30,
-    //     ),
-    //   ),
-    // );
   }
 }
