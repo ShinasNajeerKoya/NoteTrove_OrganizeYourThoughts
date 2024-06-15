@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "852226200857",
+    "project_id": "notetrove-organizeyourthoughts",
+    "storage_bucket": "notetrove-organizeyourthoughts.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:852226200857:android:6038a4771fad237f6a2188",
+        "android_client_info": {
+          "package_name": "com.example.note_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDbCQcnFxIv3VP61vFAodvAmQwFrEeJlKc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:852226200857:android:3ea8c8488cd8da256a2188",
+        "android_client_info": {
+          "package_name": "com.example.notes_applications"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDbCQcnFxIv3VP61vFAodvAmQwFrEeJlKc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
