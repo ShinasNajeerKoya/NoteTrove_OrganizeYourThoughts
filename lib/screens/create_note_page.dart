@@ -23,8 +23,8 @@ class _CreateNotePageState extends State<CreateNotePage> {
 
   bool _isCreatingNote = false;
 
-  int selectedColor = 4294967295; // default color value
-  Image? selectedImage;
+  int selectedColor = 0xfff6f7e7;
+  String? selectedImage;
 
   _createNote() {
     setState(() {
@@ -50,7 +50,7 @@ class _CreateNotePageState extends State<CreateNotePage> {
           title: _titleController.text,
           body: _bodyController.text,
           color: selectedImage == null ? selectedColor : null,
-          imageAddress: selectedImage?.image.toString(), // Updated
+          imageAddress: selectedImage, // Updated
         )).then((value) {
           _isCreatingNote = false;
           Navigator.pop(context);
@@ -74,20 +74,16 @@ class _CreateNotePageState extends State<CreateNotePage> {
         children: [
           Container(
             decoration: BoxDecoration(
-              color: selectedImage == null ? Color(selectedColor) : null,
+              color: selectedImage == null ? Color(selectedColor) : Colors.red,
               image: selectedImage != null
                   ? DecorationImage(
-                      image: selectedImage!.image,
+                      image: AssetImage(selectedImage!),
                       fit: BoxFit.cover,
                     )
                   : null,
             ),
             child: _isCreatingNote ? CircularProgressIndicator() : null,
           ),
-          if (selectedImage != null)
-            Container(
-              color: Colors.white.withOpacity(0.5),
-            ),
           SingleChildScrollView(
             physics: AlwaysScrollableScrollPhysics(),
             child: AbsorbPointer(
@@ -173,7 +169,7 @@ class _CreateNotePageState extends State<CreateNotePage> {
                         scrollDirection: Axis.horizontal,
                         itemCount: preDefinesNoteImages.length,
                         itemBuilder: (context, index) {
-                          final image = preDefinesNoteImages[index];
+                          final image = preDefinesNoteImages[index]["image"];
                           return GestureDetector(
                             onTap: () {
                               setState(() {
@@ -195,7 +191,7 @@ class _CreateNotePageState extends State<CreateNotePage> {
                                       : Colors.transparent,
                                 ),
                                 image: DecorationImage(
-                                  image: image.image,
+                                  image: AssetImage(image),
                                   fit: BoxFit.cover,
                                 ),
                               ),

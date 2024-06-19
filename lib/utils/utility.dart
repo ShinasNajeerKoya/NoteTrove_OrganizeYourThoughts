@@ -21,13 +21,24 @@ final List<Color> preDefinedNoteColors = [
   const Color(0xfff1fdf1),
 ];
 
-final List<Image> preDefinesNoteImages = [
-  Image.asset("assets/images/ab_2.png"),
-  Image.asset("assets/images/ab_4.png"),
-  Image.asset("assets/images/ab_7.png"),
-  Image.asset("assets/images/ab_8.png"),
-  Image.asset("assets/images/ab_9.png"),
-  Image.asset("assets/images/ab_10.png"),
+ List preDefinesNoteImages = [
+
+  {"image":"assets/images/ab_2.png"},
+  {"image":"assets/images/ab_4.png"},
+  {"image":"assets/images/ab_7.png"},
+  {"image":  "assets/images/ab_8.png"},
+  {"image":"assets/images/ab_9.png"},
+  {"image": "assets/images/ab_10.png"},
+
+
+
+
+
+  // Image.asset("assets/images/ab_4.png"),
+  // Image.asset("assets/images/ab_7.png"),
+  // Image.asset("assets/images/ab_8.png"),
+  // Image.asset("assets/images/ab_9.png"),
+  // Image.asset("assets/images/ab_10.png"),
 ];
 
 // for the floating notification, used toast instead of snackbar

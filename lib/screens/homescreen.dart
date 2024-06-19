@@ -25,57 +25,8 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
   // drawer section start
-  late TextEditingController _taskController;
-
-  late List<bool> _taskDone;
-
-  late AnimationController animationController;
-  late Animation<double> degOneTranslationAnimation,
-      degTwoTranslationAnimation,
-      degThreeTranslationAnimation;
-  late Animation<double> rotationAnimation;
-
-  double getRadianFromDegree(double degree) {
-    double unitRadian = 57.2958;
-    return degree / unitRadian;
-  }
-
-  void initState() {
-    super.initState();
-    _taskController = TextEditingController();
-
-    animationController = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 500));
-    degOneTranslationAnimation = TweenSequence([
-      TweenSequenceItem<double>(
-          tween: Tween<double>(begin: 0.0, end: 1.2), weight: 75.0),
-      TweenSequenceItem<double>(
-          tween: Tween<double>(begin: 1.2, end: 1.0), weight: 25.0),
-    ]).animate(animationController);
-    degTwoTranslationAnimation = TweenSequence([
-      TweenSequenceItem<double>(
-          tween: Tween<double>(begin: 0.0, end: 1.4), weight: 50.0),
-      TweenSequenceItem<double>(
-          tween: Tween<double>(begin: 1.4, end: 1.0), weight: 50.0),
-    ]).animate(animationController);
-    degThreeTranslationAnimation = TweenSequence([
-      TweenSequenceItem<double>(
-          tween: Tween<double>(begin: 0.0, end: 1.7), weight: 25.0),
-      TweenSequenceItem<double>(
-          tween: Tween<double>(begin: 1.7, end: 1.0), weight: 75.0),
-    ]).animate(animationController);
-    rotationAnimation = Tween(begin: 180.0, end: 0.0).animate(
-        CurvedAnimation(parent: animationController, curve: Curves.easeOut));
-    animationController.addListener(() {
-      setState(() {});
-    });
-  }
 
   //drawer section end
-
-  //
-
-  //
 
   void deleteNoteErrorHandler(NoteModel noteIndex) {
     try {
@@ -114,15 +65,6 @@ class _HomePageState extends State<HomePage>
           );
         },
       ),
-      // FloatingDrawerItem(
-      //   imageUrl: 'assets/images/abstract_1.png',
-      //   onTap: () {
-      //     // Function to be called when this item is tapped
-      //     print('Item with abstract image tapped');
-      //
-      //     // Add your specific logic here
-      //   },
-      // ),
     ];
 
     return Scaffold(
@@ -156,8 +98,8 @@ class _HomePageState extends State<HomePage>
                         height: 65,
                         child: ListView.builder(
                           scrollDirection: Axis.horizontal,
+                          //todo - replace this with state
                           itemCount: 5,
-                          // Replace with your actual categories count
                           itemBuilder: (context, index) => GestureDetector(
                             onTap: () {
                               print("Category tapped: $index");
@@ -208,7 +150,6 @@ class _HomePageState extends State<HomePage>
                             ConnectionState.waiting) {
                           return Center(child: CircularProgressIndicator());
                         }
-
                         if (!snapshot.hasData || snapshot.data!.isEmpty) {
                           return Center(
                             child: Text(
@@ -238,6 +179,7 @@ class _HomePageState extends State<HomePage>
                                 title: notes[index].title,
                                 body: notes[index].body,
                                 backgroundColor: notes[index].color,
+                                imageAddress: notes[index].imageAddress,
                                 heartIcon: CupertinoIcons.heart,
                                 isLeft: index % 2 == 0,
                                 onTap: () {
@@ -281,7 +223,7 @@ class _HomePageState extends State<HomePage>
               child: Container(
                 height: buttonSize * (items.length + 1),
                 width: 80,
-                // color: Colors.yellow,
+
                 child: Center(
                   child: FloatingDrawerButtonWithAnimation(
                     items: items,

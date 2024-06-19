@@ -6,6 +6,7 @@ class SingleNoteContainerHomePage extends StatelessWidget {
   final String? title;
   final String? body;
   final int? backgroundColor;
+  final String? imageAddress;
   final IconData heartIcon;
   final VoidCallback? onTap;
   final VoidCallback? onLongPress;
@@ -15,7 +16,8 @@ class SingleNoteContainerHomePage extends StatelessWidget {
     Key? key,
     required this.title,
     required this.body,
-    required this.backgroundColor,
+    this.backgroundColor,
+    this.imageAddress,
     required this.heartIcon,
     this.onTap,
     this.onLongPress,
@@ -24,20 +26,53 @@ class SingleNoteContainerHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    BoxDecoration decoration;
+
+    if (imageAddress != null) {
+      decoration = BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage(imageAddress!),
+          fit: BoxFit.cover,
+          colorFilter: ColorFilter.mode(
+            Colors.white.withOpacity(0.5), // Adjust the overlay opacity
+            BlendMode.softLight,
+          ),
+        ),
+        borderRadius: BorderRadius.only(
+          bottomRight: isLeft ? Radius.circular(60) : Radius.zero,
+          topLeft: isLeft ? Radius.zero : Radius.circular(60),
+          bottomLeft: Radius.circular(60),
+          topRight: Radius.circular(60),
+        ),
+      );
+    } else if (backgroundColor != null) {
+      decoration = BoxDecoration(
+        color: Color(backgroundColor!),
+        borderRadius: BorderRadius.only(
+          bottomRight: isLeft ? Radius.circular(60) : Radius.zero,
+          topLeft: isLeft ? Radius.zero : Radius.circular(60),
+          bottomLeft: Radius.circular(60),
+          topRight: Radius.circular(60),
+        ),
+      );
+    } else {
+      decoration = BoxDecoration(
+        color: Colors.red, // Use a default background color
+        borderRadius: BorderRadius.only(
+          bottomRight: isLeft ? Radius.circular(60) : Radius.zero,
+          topLeft: isLeft ? Radius.zero : Radius.circular(60),
+          bottomLeft: Radius.circular(60),
+          topRight: Radius.circular(60),
+        ),
+      );
+    }
+
     return GestureDetector(
       onTap: onTap,
       onLongPress: onLongPress,
       child: Container(
         padding: EdgeInsets.all(12),
-        decoration: BoxDecoration(
-          color: Color(backgroundColor!),
-          borderRadius: BorderRadius.only(
-            bottomRight: isLeft ? Radius.circular(60) : Radius.zero,
-            topLeft: isLeft ? Radius.zero : Radius.circular(60),
-            bottomLeft: Radius.circular(60),
-            topRight: Radius.circular(60),
-          ),
-        ),
+        decoration: decoration,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -50,7 +85,7 @@ class SingleNoteContainerHomePage extends StatelessWidget {
                   height: 50,
                   width: 80,
                   child: MyText(
-                    title!,
+                    title ?? 'No Title',
                     style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
                     overflow: TextOverflow.ellipsis,
                     maxLines: 2,
@@ -75,7 +110,7 @@ class SingleNoteContainerHomePage extends StatelessWidget {
               child: Container(
                 margin: EdgeInsets.only(left: 10),
                 child: MyText(
-                  body!,
+                  body ?? 'No Content',
                   style: TextStyle(fontSize: 15, color: Colors.black38),
                   overflow: TextOverflow.ellipsis,
                   maxLines: 8,
