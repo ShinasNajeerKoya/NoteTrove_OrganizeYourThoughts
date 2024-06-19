@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:note_app/database/database_handler.dart';
 import 'package:note_app/models/note_model.dart';
@@ -22,6 +23,9 @@ class _CreateNotePageState extends State<CreateNotePage> {
 
   bool _isCreatingNote = false;
 
+  int selectedColor = 4294967295; // default color value
+  Image? selectedImage;
+
   _createNote() {
     setState(() {
       _isCreatingNote = true;
@@ -45,7 +49,8 @@ class _CreateNotePageState extends State<CreateNotePage> {
         DatabaseHandler.createNote(NoteModel(
           title: _titleController.text,
           body: _bodyController.text,
-          color: selectedColor,
+          color: selectedImage == null ? selectedColor : null,
+          imageAddress: selectedImage?.image.toString(), // Updated
         )).then((value) {
           _isCreatingNote = false;
           Navigator.pop(context);
@@ -61,21 +66,33 @@ class _CreateNotePageState extends State<CreateNotePage> {
     super.dispose();
   }
 
-  int selectedColor = 4294967295;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: _isCreatingNote == true ? Colors.grey.withOpacity(0.5):MyColors.darkBackroundColor,
-      body: AbsorbPointer(
-        absorbing: _isCreatingNote,
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            _isCreatingNote == true? CircularProgressIndicator():Container(),
-            SingleChildScrollView(
-              child: Container(
-                height: widget.height,
+      backgroundColor: MyColors.backGroundCream,
+      body: Stack(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              color: selectedImage == null ? Color(selectedColor) : null,
+              image: selectedImage != null
+                  ? DecorationImage(
+                      image: selectedImage!.image,
+                      fit: BoxFit.cover,
+                    )
+                  : null,
+            ),
+            child: _isCreatingNote ? CircularProgressIndicator() : null,
+          ),
+          if (selectedImage != null)
+            Container(
+              color: Colors.white.withOpacity(0.5),
+            ),
+          SingleChildScrollView(
+            physics: AlwaysScrollableScrollPhysics(),
+            child: AbsorbPointer(
+              absorbing: _isCreatingNote,
+              child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 15, vertical: 50),
                 child: Column(
                   children: [
@@ -83,11 +100,11 @@ class _CreateNotePageState extends State<CreateNotePage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         ButtonWidget(
-                          icon: Icons.arrow_back,
+                          icon: CupertinoIcons.left_chevron,
                           onTap: () => Navigator.pop(context),
                         ),
                         ButtonWidget(
-                          icon: Icons.done,
+                          icon: CupertinoIcons.floppy_disk,
                           onTap: _createNote,
                         )
                       ],
@@ -95,30 +112,39 @@ class _CreateNotePageState extends State<CreateNotePage> {
                     SizedBox(height: 30),
                     FormWidget(
                       controller: _titleController,
-                      hintText: "Title",
-                      fontSize: 40,
+                      hintText: "Enter Your Title",
+                      fontSize: 70,
+                      maxLines: 2,
                     ),
                     SizedBox(height: 10),
-                    FormWidget(
-                      maxLines: 15,
+                    TextField(
                       controller: _bodyController,
-                      hintText: "Start Typing...",
-                      fontSize: 20,
+                      minLines: 10,
+                      maxLines: null,
+                      decoration: InputDecoration(
+                        hintText: "Start Typing...",
+                        hintStyle: TextStyle(fontSize: 20),
+                        border: InputBorder.none,
+                      ),
+                      style: TextStyle(fontSize: 20),
+                      onChanged: (text) {
+                        setState(() {});
+                      },
                     ),
-                    SizedBox(
-                      height: 10,
-                    ),
+                    SizedBox(height: 10),
                     Container(
                       height: 80,
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
-                        itemCount: preDefinedColor.length,
+                        itemCount: preDefinedNoteColors.length,
                         itemBuilder: (context, index) {
-                          final singleColor = preDefinedColor[index];
+                          final singleColor = preDefinedNoteColors[index];
                           return GestureDetector(
                             onTap: () {
                               setState(() {
                                 selectedColor = singleColor.value;
+                                selectedImage =
+                                    null; // Reset the selected image
                               });
                             },
                             child: Container(
@@ -126,23 +152,64 @@ class _CreateNotePageState extends State<CreateNotePage> {
                               width: 60,
                               margin: EdgeInsets.only(right: 10),
                               decoration: BoxDecoration(
-                                  color: singleColor,
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                      width: 2,
-                                      color:
-                                          selectedColor == singleColor.value ? Colors.white : Colors.transparent)),
+                                color: singleColor,
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  width: 2,
+                                  color: selectedColor == singleColor.value
+                                      ? Colors.white
+                                      : Colors.transparent,
+                                ),
+                              ),
                             ),
                           );
                         },
                       ),
-                    )
+                    ),
+                    SizedBox(height: 10),
+                    Container(
+                      height: 80,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: preDefinesNoteImages.length,
+                        itemBuilder: (context, index) {
+                          final image = preDefinesNoteImages[index];
+                          return GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                selectedImage = image;
+                                selectedColor =
+                                    4294967295; // Reset the selected color
+                              });
+                            },
+                            child: Container(
+                              height: 60,
+                              width: 60,
+                              margin: EdgeInsets.only(right: 10),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  width: 2,
+                                  color: selectedImage == image
+                                      ? Colors.white
+                                      : Colors.transparent,
+                                ),
+                                image: DecorationImage(
+                                  image: image.image,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
                   ],
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

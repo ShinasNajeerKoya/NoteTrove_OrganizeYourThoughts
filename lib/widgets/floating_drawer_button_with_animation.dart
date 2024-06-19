@@ -7,7 +7,7 @@ import 'package:note_app/theme/colors.dart';
 const buttonSize = 75.0;
 
 class FloatingDrawerButtonWithAnimation extends StatefulWidget {
-  final List<Widget> items;
+  final List<FloatingDrawerItem> items;
 
   const FloatingDrawerButtonWithAnimation({
     Key? key,
@@ -45,13 +45,19 @@ class _FloatingDrawerButtonWithAnimationState extends State<FloatingDrawerButton
     );
   }
 
-  Widget buildCustomItem(Widget item) {
+  Widget buildCustomItem(FloatingDrawerItem item) {
     return GestureDetector(
       onTap: () {
+        // Call the onTap function defined in FloatingDrawerItem
+        item.onTap?.call();
+
+        // Handle animation state
         if (controller.status == AnimationStatus.completed) {
           controller.reverse();
+          log("closed");
         } else {
           controller.forward();
+          log("opened");
         }
         log("$item is pressed");
       },
@@ -59,10 +65,14 @@ class _FloatingDrawerButtonWithAnimationState extends State<FloatingDrawerButton
         height: buttonSize,
         width: buttonSize,
         decoration: BoxDecoration(
-          color: MyColors.backGroundDarkGrey2,
+          color: item.color ?? MyColors.backGroundDarkGrey2,
           shape: BoxShape.circle,
+          border: Border.all(width: 0.5, color: Colors.transparent),
+          image: item.imageUrl != null
+              ? DecorationImage(image: AssetImage(item.imageUrl!), fit: BoxFit.cover)
+              : null,
         ),
-        child: Center(child: item),
+        child: item.icon != null ? Icon(item.icon, size: 30, color: Colors.white) : null,
       ),
     );
   }
@@ -88,7 +98,7 @@ class FlowMenuDelegate extends FlowDelegate {
       final dy = (childSize + margin) * i;
       final x = 0.0;
       final y = yStart - (buttonSize * itemCount) + dy * controller.value;
-      context.paintChild(i, transform: Matrix4.translationValues(x, y, 0)); // Adjust margin here
+      context.paintChild(i, transform: Matrix4.translationValues(x, y, 0));
     }
   }
 
@@ -96,4 +106,13 @@ class FlowMenuDelegate extends FlowDelegate {
   bool shouldRepaint(FlowMenuDelegate oldDelegate) {
     return controller != oldDelegate.controller || itemCount != oldDelegate.itemCount;
   }
+}
+
+class FloatingDrawerItem {
+  final IconData? icon;
+  final Color? color;
+  final String? imageUrl;
+  final VoidCallback? onTap;
+
+  FloatingDrawerItem({this.icon, this.color, this.imageUrl, this.onTap});
 }

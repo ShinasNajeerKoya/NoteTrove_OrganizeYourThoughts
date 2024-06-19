@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:note_app/theme/colors.dart';
 
-
 class ButtonWidget extends StatelessWidget {
   final IconData icon;
   final VoidCallback? onTap;
@@ -13,10 +12,17 @@ class ButtonWidget extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        height: 40,
-        width: 40,
-        decoration: BoxDecoration(borderRadius: BorderRadius.circular(5),color: MyColors.backroundColor),
-        child: Center(child: Icon(icon,color: Colors.white,),),
+        height: 75,
+        width: 75,
+        decoration:
+            BoxDecoration(shape: BoxShape.circle, color: MyColors.black18),
+        child: Center(
+          child: Icon(
+            icon,
+            color: Colors.black,
+            size: 28,
+          ),
+        ),
       ),
     );
   }

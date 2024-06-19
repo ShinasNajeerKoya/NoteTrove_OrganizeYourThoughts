@@ -7,4 +7,6 @@ class MyColors {
   static const Color lightGrey = Color(0xff7a7a7a);
   static const Color black5 = Color(0xd000000);
   static const Color black8 = Color(0x14000000);
+  static const Color black18 = Color(0x18000000);
+  static const Color backGroundCream = Color(0xfff6ecc9);
 }
