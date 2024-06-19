@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:note_app/theme/colors.dart';
 import 'package:note_app/widgets/MyText.dart';
 
@@ -34,7 +35,7 @@ class SingleNoteContainerHomePage extends StatelessWidget {
           image: AssetImage(imageAddress!),
           fit: BoxFit.cover,
           colorFilter: ColorFilter.mode(
-            Colors.white.withOpacity(0.5), // Adjust the overlay opacity
+            Colors.white.withOpacity(0.5),
             BlendMode.softLight,
           ),
         ),
@@ -71,12 +72,20 @@ class SingleNoteContainerHomePage extends StatelessWidget {
       onTap: onTap,
       onLongPress: onLongPress,
       child: Container(
-        padding: EdgeInsets.all(12),
+        padding: EdgeInsets.only(left: 12, right: 12, bottom: 12),
         decoration: decoration,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Center(child: Icon(Icons.horizontal_rule_outlined)),
+            Center(
+              child: Container(
+                height: 40,
+                width: 40,
+                child: SvgPicture.asset(
+                  "assets/svg/more_new.svg",
+                ),
+              ),
+            ),
             SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

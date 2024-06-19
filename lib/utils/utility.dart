@@ -12,27 +12,22 @@ final List<Color> preDefinedColor = [
 ];
 
 final List<Color> preDefinedNoteColors = [
-  const Color(0xfffddee6),
   const Color(0xfffff6ef),
   const Color(0xfff6ecc9),
   const Color(0xffebf6fc),
   const Color(0xffa8d672),
   const Color(0xfff6f7e7),
+  const Color(0xfffddee6),
   const Color(0xfff1fdf1),
 ];
 
- List preDefinesNoteImages = [
-
-  {"image":"assets/images/ab_2.png"},
-  {"image":"assets/images/ab_4.png"},
-  {"image":"assets/images/ab_7.png"},
-  {"image":  "assets/images/ab_8.png"},
-  {"image":"assets/images/ab_9.png"},
+List preDefinesNoteImages = [
+  {"image": "assets/images/ab_2.png"},
+  {"image": "assets/images/ab_4.png"},
+  {"image": "assets/images/ab_7.png"},
+  {"image": "assets/images/ab_8.png"},
+  {"image": "assets/images/ab_9.png"},
   {"image": "assets/images/ab_10.png"},
-
-
-
-
 
   // Image.asset("assets/images/ab_4.png"),
   // Image.asset("assets/images/ab_7.png"),

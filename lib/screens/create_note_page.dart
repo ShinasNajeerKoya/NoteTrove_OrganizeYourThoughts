@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:note_app/database/database_handler.dart';
 import 'package:note_app/models/note_model.dart';
+import 'package:note_app/screens/loading_screen.dart';
 import 'package:note_app/theme/colors.dart';
 import 'package:note_app/utils/utility.dart';
 import 'package:note_app/widgets/button_widget.dart';
@@ -23,7 +24,7 @@ class _CreateNotePageState extends State<CreateNotePage> {
 
   bool _isCreatingNote = false;
 
-  int selectedColor = 0xfff6f7e7;
+  int selectedColor = 0xfff6ecc9;
   String? selectedImage;
 
   _createNote() {
@@ -82,7 +83,9 @@ class _CreateNotePageState extends State<CreateNotePage> {
                     )
                   : null,
             ),
-            child: _isCreatingNote ? CircularProgressIndicator() : null,
+            child: _isCreatingNote ? CircularProgressIndicator()
+            //todo - show error page if its false
+                : null,
           ),
           SingleChildScrollView(
             physics: AlwaysScrollableScrollPhysics(),

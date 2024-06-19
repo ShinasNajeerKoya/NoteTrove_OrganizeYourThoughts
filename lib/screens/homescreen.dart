@@ -7,6 +7,7 @@ import 'package:note_app/database/database_handler.dart';
 import 'package:note_app/models/note_model.dart';
 import 'package:note_app/screens/create_note_page.dart';
 import 'package:note_app/screens/edit_note_page.dart';
+import 'package:note_app/screens/loading_screen.dart';
 import 'package:note_app/theme/colors.dart';
 import 'package:note_app/utils/utility.dart';
 import 'package:note_app/widgets/MyText.dart';
@@ -49,6 +50,7 @@ class _HomePageState extends State<HomePage>
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
 
+    //List of items for the drop down drawer
     List<FloatingDrawerItem> items = [
       FloatingDrawerItem(
         icon: CupertinoIcons.square_grid_2x2,
@@ -59,8 +61,10 @@ class _HomePageState extends State<HomePage>
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) =>
-                  CreateNotePage(height: height, width: width),
+              builder: (context) => LoadingScreen(
+                height: height,
+                width: width,
+              ),
             ),
           );
         },
@@ -162,7 +166,7 @@ class _HomePageState extends State<HomePage>
                         final notes = snapshot.data!;
                         return Padding(
                           padding: const EdgeInsets.only(
-                              left: 10, right: 10, top: 25, bottom: 20),
+                              left: 15, right: 15, top: 25, bottom: 20),
                           child: GridView.builder(
                             shrinkWrap: true,
                             physics: NeverScrollableScrollPhysics(),
@@ -186,7 +190,7 @@ class _HomePageState extends State<HomePage>
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => EditNotePage(
+                                      builder: (context) => LoadingScreen(
                                         height: height,
                                         width: width,
                                         noteModel: notes[index],
@@ -223,7 +227,6 @@ class _HomePageState extends State<HomePage>
               child: Container(
                 height: buttonSize * (items.length + 1),
                 width: 80,
-
                 child: Center(
                   child: FloatingDrawerButtonWithAnimation(
                     items: items,
