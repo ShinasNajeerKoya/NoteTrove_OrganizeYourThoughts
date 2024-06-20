@@ -15,10 +15,12 @@ class FloatingDrawerButtonWithAnimation extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<FloatingDrawerButtonWithAnimation> createState() => _FloatingDrawerButtonWithAnimationState();
+  State<FloatingDrawerButtonWithAnimation> createState() =>
+      _FloatingDrawerButtonWithAnimationState();
 }
 
-class _FloatingDrawerButtonWithAnimationState extends State<FloatingDrawerButtonWithAnimation>
+class _FloatingDrawerButtonWithAnimationState
+    extends State<FloatingDrawerButtonWithAnimation>
     with SingleTickerProviderStateMixin {
   late AnimationController controller;
 
@@ -40,8 +42,10 @@ class _FloatingDrawerButtonWithAnimationState extends State<FloatingDrawerButton
   @override
   Widget build(BuildContext context) {
     return Flow(
-      delegate: FlowMenuDelegate(controller: controller, itemCount: widget.items.length),
-      children: widget.items.map<Widget>((item) => buildCustomItem(item)).toList(),
+      delegate: FlowMenuDelegate(
+          controller: controller, itemCount: widget.items.length),
+      children:
+          widget.items.map<Widget>((item) => buildCustomItem(item)).toList(),
     );
   }
 
@@ -65,14 +69,17 @@ class _FloatingDrawerButtonWithAnimationState extends State<FloatingDrawerButton
         height: buttonSize,
         width: buttonSize,
         decoration: BoxDecoration(
-          color: item.color ?? MyColors.backGroundDarkGrey2,
+          color: item.color ?? Colors.grey.shade200,
           shape: BoxShape.circle,
-          border: Border.all(width: 0.5, color: Colors.transparent),
+          border: Border.all(width: 0.5, color: Colors.white),
           image: item.imageUrl != null
-              ? DecorationImage(image: AssetImage(item.imageUrl!), fit: BoxFit.cover)
+              ? DecorationImage(
+                  image: AssetImage(item.imageUrl!), fit: BoxFit.cover)
               : null,
         ),
-        child: item.icon != null ? Icon(item.icon, size: 30, color: Colors.white) : null,
+        child: item.icon != null
+            ? Icon(item.icon, size: 30, color: Colors.grey.shade700)
+            : null,
       ),
     );
   }
@@ -104,7 +111,8 @@ class FlowMenuDelegate extends FlowDelegate {
 
   @override
   bool shouldRepaint(FlowMenuDelegate oldDelegate) {
-    return controller != oldDelegate.controller || itemCount != oldDelegate.itemCount;
+    return controller != oldDelegate.controller ||
+        itemCount != oldDelegate.itemCount;
   }
 }
 

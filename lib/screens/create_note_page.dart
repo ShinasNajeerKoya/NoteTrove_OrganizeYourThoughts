@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:note_app/database/database_handler.dart';
 import 'package:note_app/models/note_model.dart';
-import 'package:note_app/screens/loading_screen.dart';
+import 'package:note_app/screens/error_screen.dart';
 import 'package:note_app/theme/colors.dart';
 import 'package:note_app/utils/utility.dart';
 import 'package:note_app/widgets/button_widget.dart';
@@ -83,8 +83,8 @@ class _CreateNotePageState extends State<CreateNotePage> {
                     )
                   : null,
             ),
-            child: _isCreatingNote ? CircularProgressIndicator()
-            //todo - show error page if its false
+            child: _isCreatingNote
+                ? ErrorScreen(errorType: ErrorType.notFound404)
                 : null,
           ),
           SingleChildScrollView(

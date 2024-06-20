@@ -8,14 +8,14 @@ import 'package:note_app/screens/edit_note_page.dart';
 class LoadingScreen extends StatefulWidget {
   final double height;
   final double width;
-  final NoteModel? noteModel; // Make NoteModel nullable
+  final NoteModel? noteModel;
 
   const LoadingScreen({
-    Key? key,
+    super.key,
     required this.height,
     required this.width,
     this.noteModel, // NoteModel is now nullable
-  }) : super(key: key);
+  });
 
   @override
   _LoadingScreenState createState() => _LoadingScreenState();
@@ -35,7 +35,6 @@ class _LoadingScreenState extends State<LoadingScreen> {
 
   void navigateToNextPage() {
     if (widget.noteModel == null || widget.noteModel!.id == null) {
-      // Navigate to CreateNotePage if noteModel or id is null
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
@@ -45,7 +44,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
           ),
         ),
       );
-    } else {
+    } else if (widget.noteModel != null) {
       // Navigate to EditNotePage if noteModel is not null and id is not null
       Navigator.pushReplacement(
         context,
@@ -63,6 +62,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
   @override
   Widget build(BuildContext context) {
     Color? backgroundColor;
+    String? loadingBackgroundImage;
 
     if (widget.noteModel != null) {
       if (widget.noteModel!.color != null) {
@@ -73,8 +73,8 @@ class _LoadingScreenState extends State<LoadingScreen> {
         backgroundColor = Colors.red;
       }
     } else {
-      backgroundColor =
-          Color(0xfff6ecc9); // Default to red if noteModel is null
+      loadingBackgroundImage =
+          "assets/images/ab_bg_w_normal.png"; // Default to an image if noteModel is null
     }
 
     return Scaffold(
@@ -88,7 +88,12 @@ class _LoadingScreenState extends State<LoadingScreen> {
                     widget.noteModel!.imageAddress!,
                     fit: BoxFit.cover,
                   )
-                : Container(color: backgroundColor),
+                : (backgroundColor != null
+                    ? Container(color: backgroundColor)
+                    : Image.asset(
+                        loadingBackgroundImage!,
+                        fit: BoxFit.cover,
+                      )),
           ),
           Center(
             child: Lottie.asset(

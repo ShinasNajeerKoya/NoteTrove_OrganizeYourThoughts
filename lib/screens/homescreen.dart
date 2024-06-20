@@ -72,13 +72,13 @@ class _HomePageState extends State<HomePage>
     ];
 
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white,
       body: Container(
         height: height,
         width: width,
         decoration: BoxDecoration(
             image: DecorationImage(
-                image: AssetImage("assets/images/ab_1.png"),
+                image: AssetImage("assets/images/ab_bg_w_dark.png"),
                 fit: BoxFit.cover)),
         child: Stack(
           children: [
@@ -92,7 +92,7 @@ class _HomePageState extends State<HomePage>
                       padding: const EdgeInsets.only(left: 20, top: 30),
                       child: MyText(
                         "My\nNotes",
-                        style: TextStyle(color: Colors.white, fontSize: 70),
+                        style: TextStyle(color: Colors.black, fontSize: 70),
                       ),
                     ),
                     SizedBox(height: 20),
@@ -115,14 +115,14 @@ class _HomePageState extends State<HomePage>
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(75),
                                 border:
-                                    Border.all(width: 1, color: Colors.white),
+                                    Border.all(width: 1, color: Colors.black),
                               ),
                               child: Row(
                                 children: [
                                   MyText(
                                     "All", // Replace with category text
                                     style: TextStyle(
-                                        fontSize: 28, color: Colors.white),
+                                        fontSize: 28, color: Colors.black),
                                   ),
                                   SizedBox(width: 5),
                                   Container(
@@ -203,8 +203,11 @@ class _HomePageState extends State<HomePage>
                                     context,
                                     height: 230,
                                     width: width,
-                                    title:
-                                        "Are you sure you want\nto delete this note?",
+                                    title: "Warning!!",
+                                    subTitle:
+                                        "Are you sure you want to delete this note?",
+                                    popupIconAddress:
+                                        "assets/images/delete_image.png",
                                     onTapYes: () {
                                       deleteNoteErrorHandler(notes[index]);
                                       Navigator.pop(context);

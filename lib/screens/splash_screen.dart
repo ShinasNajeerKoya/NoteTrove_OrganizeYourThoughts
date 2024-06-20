@@ -31,11 +31,11 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white,
       body: Container(
         decoration: BoxDecoration(
             image: DecorationImage(
-                image: AssetImage("assets/images/ab_1.png"),
+                image: AssetImage("assets/images/ab_bg_w_normal.png"),
                 fit: BoxFit.fitHeight)),
         child: Center(
           child: Lottie.asset(

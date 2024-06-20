@@ -27,7 +27,7 @@ class EditNotePage extends StatefulWidget {
 class _EditNotePageState extends State<EditNotePage> {
   late TextEditingController _titleController;
   late TextEditingController _bodyController;
-  int selectedColor = 0xfff6f7e7; // Default to white color if none provided
+  int selectedColor = 0xffa8d672; // Default to white color if none provided
   bool _isEditingNote = false;
   String? selectedImage;
 
@@ -120,13 +120,20 @@ class _EditNotePageState extends State<EditNotePage> {
                         ButtonWidget(
                           icon: CupertinoIcons.floppy_disk,
                           onTap: () {
-                            showDialogBoxWidget(context,
-                                height: 200,
-                                width: widget.width,
-                                title: "Save Changes ?", onTapYes: () {
-                              _editNote();
-                              Navigator.pop(context);
-                            });
+                            showDialogBoxWidget(
+                              context,
+                              height: 240,
+                              width: widget.width,
+                              title: "Attention!!",
+                              subTitle:
+                                  "Save changes to your notes?",
+                              popupIconAddress:
+                                  "assets/images/save_icon_image.png",
+                              onTapYes: () {
+                                _editNote();
+                                Navigator.pop(context);
+                              },
+                            );
                           },
                         )
                       ],

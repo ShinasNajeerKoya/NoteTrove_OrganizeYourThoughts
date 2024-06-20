@@ -1,34 +1,82 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:note_app/theme/colors.dart';
+import 'package:note_app/widgets/MyText.dart';
 
-showDialogBoxWidget(BuildContext context,
-    {String? title, VoidCallback? onTapYes, double? height, double? width}) {
+showDialogBoxWidget(
+  BuildContext context, {
+  String? title,
+  String? subTitle,
+  String? popupIconAddress,
+  VoidCallback? onTapYes,
+  double? height,
+  double? width,
+}) {
   return showDialog(
       context: context,
       builder: (context) {
         return Dialog(
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15),
+            borderRadius: BorderRadius.circular(35),
           ),
-          backgroundColor: Colors.black87,
+          backgroundColor: Colors.white,
           child: Container(
             width: width,
             height: height,
-            padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+            margin: EdgeInsets.zero,
+            padding: EdgeInsets.only(top: 20, left: 20, right: 20),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Icon(
-                  Icons.info,
-                  color: MyColors.lightGrey,
-                  size: 40,
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        height: 60,
+                        width: 60,
+                        margin: EdgeInsets.only(left: 10, top: 0),
+                        child: Image.asset(
+                          popupIconAddress!,
+                          fit: BoxFit.fitHeight,
+                          scale: 0.2,
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: Container(
+                          height: 30,
+                          width: 30,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(
+                              color: Colors.grey.shade400,
+                              width: 0.5,
+                            ),
+                          ),
+                          child: Icon(
+                            CupertinoIcons.xmark,
+                            color: Colors.grey.shade500,
+                            size: 15,
+                          ),
+                        ),
+                      )
+                    ]),
+                SizedBox(
+                  height: 10,
                 ),
-                SizedBox(height: 20),
-                Text(
+                MyText(
                   title!,
+                  style: TextStyle(fontSize: 23, fontWeight: FontWeight.w700),
+                ),
+                SizedBox(
+                  height: 8,
+                ),
+                MyText(
+                  subTitle!,
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.w300, color: Colors.white70),
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
                 ),
                 SizedBox(height: 20),
                 Row(
@@ -39,28 +87,37 @@ showDialogBoxWidget(BuildContext context,
                         Navigator.pop(context);
                       },
                       child: Container(
-                        width: 130,
-                        height: 40,
-                        decoration: BoxDecoration(color: Colors.red, borderRadius: BorderRadius.circular(5)),
+                        height: 50,
+                        width: 90,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(18),
+                            border: Border.all(color: Colors.grey.shade400)),
                         child: Center(
-                            child: Text(
-                          "No",
-                          style: TextStyle(fontSize: 16, color: Colors.white),
+                            child: MyText(
+                          "No, thanks",
+                          style: TextStyle(
+                              fontSize: 15, color: Colors.grey.shade400),
                         )),
                       ),
                     ),
-                    GestureDetector(
-                      onTap: onTapYes,
-                      child: Container(
-                        width: 130,
-                        height: 40,
-                        decoration:
-                            BoxDecoration(color: Colors.green, borderRadius: BorderRadius.circular(5)),
-                        child: Center(
-                            child: Text(
-                          "Yes",
-                          style: TextStyle(fontSize: 16, color: Colors.white),
-                        )),
+                    SizedBox(width: 8),
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: onTapYes,
+                        child: Container(
+                          height: 50,
+                          decoration: BoxDecoration(
+                              color: Colors.green.shade700,
+                              borderRadius: BorderRadius.circular(18)),
+                          child: Center(
+                              child: MyText(
+                            "Yes",
+                            style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w700),
+                          )),
+                        ),
                       ),
                     ),
                   ],
