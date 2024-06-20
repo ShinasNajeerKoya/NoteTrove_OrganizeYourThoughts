@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 
 class MyText extends StatelessWidget {
@@ -12,14 +13,14 @@ class MyText extends StatelessWidget {
 
   const MyText(
     this.data, {
-    Key? key,
+    super.key,
     this.style,
     this.textAlign,
     this.overflow,
     this.maxLines,
     this.fontFamily = 'Lufga',
     this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

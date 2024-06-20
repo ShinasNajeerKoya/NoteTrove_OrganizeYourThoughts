@@ -1,8 +1,6 @@
 import 'dart:developer';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:note_app/theme/colors.dart';
 
 const buttonSize = 75.0;
 
@@ -10,9 +8,9 @@ class FloatingDrawerButtonWithAnimation extends StatefulWidget {
   final List<FloatingDrawerItem> items;
 
   const FloatingDrawerButtonWithAnimation({
-    Key? key,
+    super.key,
     required this.items,
-  }) : super(key: key);
+  });
 
   @override
   State<FloatingDrawerButtonWithAnimation> createState() =>
@@ -28,7 +26,7 @@ class _FloatingDrawerButtonWithAnimationState
   void initState() {
     controller = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 300),
     );
     super.initState();
   }
@@ -100,10 +98,10 @@ class FlowMenuDelegate extends FlowDelegate {
     final yStart = size.height - buttonSize;
 
     for (int i = itemCount - 1; i >= 0; i--) {
-      final margin = 10;
+      const margin = 10;
       final childSize = context.getChildSize(i)!.width;
       final dy = (childSize + margin) * i;
-      final x = 0.0;
+      const x = 0.0;
       final y = yStart - (buttonSize * itemCount) + dy * controller.value;
       context.paintChild(i, transform: Matrix4.translationValues(x, y, 0));
     }

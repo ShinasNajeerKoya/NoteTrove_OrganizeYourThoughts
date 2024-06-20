@@ -2,22 +2,18 @@ import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:note_app/database/database_handler.dart';
 import 'package:note_app/models/note_model.dart';
-import 'package:note_app/screens/create_note_page.dart';
-import 'package:note_app/screens/edit_note_page.dart';
 import 'package:note_app/screens/loading_screen.dart';
 import 'package:note_app/theme/colors.dart';
 import 'package:note_app/utils/utility.dart';
-import 'package:note_app/widgets/MyText.dart';
-import 'package:note_app/widgets/circular_floating_button.dart';
+import 'package:note_app/widgets/my_text.dart';
 import 'package:note_app/widgets/dialog_box_widget.dart';
 import 'package:note_app/widgets/floating_drawer_button_with_animation.dart';
 import 'package:note_app/widgets/single_note_container_homepage_widget.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -76,7 +72,7 @@ class _HomePageState extends State<HomePage>
       body: Container(
         height: height,
         width: width,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
             image: DecorationImage(
                 image: AssetImage("assets/images/ab_bg_w_dark.png"),
                 fit: BoxFit.cover)),
@@ -84,21 +80,21 @@ class _HomePageState extends State<HomePage>
           children: [
             SafeArea(
               child: SingleChildScrollView(
-                physics: BouncingScrollPhysics(),
+                physics: const BouncingScrollPhysics(),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 20, top: 30),
+                    const Padding(
+                      padding: EdgeInsets.only(left: 20, top: 30),
                       child: MyText(
                         "My\nNotes",
                         style: TextStyle(color: Colors.black, fontSize: 70),
                       ),
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                      child: Container(
+                      child: SizedBox(
                         height: 65,
                         child: ListView.builder(
                           scrollDirection: Axis.horizontal,
@@ -106,12 +102,12 @@ class _HomePageState extends State<HomePage>
                           itemCount: 5,
                           itemBuilder: (context, index) => GestureDetector(
                             onTap: () {
-                              print("Category tapped: $index");
+                              log("Category tapped: $index");
                             },
                             child: Container(
                               alignment: Alignment.center,
-                              padding: EdgeInsets.symmetric(horizontal: 20),
-                              margin: EdgeInsets.only(right: 10),
+                              padding: const EdgeInsets.symmetric(horizontal: 20),
+                              margin: const EdgeInsets.only(right: 10),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(75),
                                 border:
@@ -119,21 +115,21 @@ class _HomePageState extends State<HomePage>
                               ),
                               child: Row(
                                 children: [
-                                  MyText(
+                                  const MyText(
                                     "All", // Replace with category text
                                     style: TextStyle(
                                         fontSize: 28, color: Colors.black),
                                   ),
-                                  SizedBox(width: 5),
+                                  const SizedBox(width: 5),
                                   Container(
                                     height: 25,
                                     width: 25,
                                     alignment: Alignment.center,
-                                    decoration: BoxDecoration(
+                                    decoration: const BoxDecoration(
                                       color: MyColors.backGroundDarkGrey2,
                                       shape: BoxShape.circle,
                                     ),
-                                    child: MyText(
+                                    child: const MyText(
                                       "25",
                                       style: TextStyle(
                                           color: Colors.white, fontSize: 13),
@@ -146,16 +142,16 @@ class _HomePageState extends State<HomePage>
                         ),
                       ),
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     StreamBuilder<List<NoteModel>>(
                       stream: DatabaseHandler.getNotes(),
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
-                          return Center(child: CircularProgressIndicator());
+                          return const Center(child: CircularProgressIndicator());
                         }
                         if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                          return Center(
+                          return const Center(
                             child: Text(
                               "No notes available",
                               style: TextStyle(color: Colors.white),
@@ -169,9 +165,9 @@ class _HomePageState extends State<HomePage>
                               left: 15, right: 15, top: 25, bottom: 20),
                           child: GridView.builder(
                             shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
+                            physics: const NeverScrollableScrollPhysics(),
                             gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
+                                const SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 2,
                               crossAxisSpacing: 4,
                               mainAxisSpacing: 10,
@@ -227,7 +223,7 @@ class _HomePageState extends State<HomePage>
             Positioned(
               top: 50,
               right: 10,
-              child: Container(
+              child: SizedBox(
                 height: buttonSize * (items.length + 1),
                 width: 80,
                 child: Center(

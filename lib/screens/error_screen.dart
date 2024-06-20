@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:note_app/theme/colors.dart';
-import 'package:note_app/widgets/MyText.dart';
+import 'package:note_app/widgets/my_text.dart';
 
 enum ErrorType {
   noInternet,
@@ -14,11 +13,11 @@ class ErrorScreen extends StatelessWidget {
   final VoidCallback? notFound404GoBack;
 
   const ErrorScreen({
-    Key? key, // Corrected parameter name
+    super.key, // Corrected parameter name
     required this.errorType,
     this.noInternetRetry,
     this.notFound404GoBack,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +45,7 @@ class ErrorScreen extends StatelessWidget {
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
               image: AssetImage("assets/images/ab_bg_w_light.png"),
               fit: BoxFit.cover),
@@ -54,7 +53,7 @@ class ErrorScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            MyText(
+            const MyText(
               "Ooopss...!",
               style: TextStyle(
                 fontSize: 50,
@@ -63,17 +62,17 @@ class ErrorScreen extends StatelessWidget {
               ),
             ),
             SvgPicture.asset(height: 340, svgIconPath),
-            SizedBox(height: 40),
+            const SizedBox(height: 40),
             MyText(
               errorHeader,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 23,
                 fontWeight: FontWeight.w700,
                 color: Colors.black,
               ),
             ),
-            SizedBox(height: 20),
-            MyText(
+            const SizedBox(height: 20),
+            const MyText(
               "We're sorry,",
               style: TextStyle(
                 fontSize: 16,
@@ -81,16 +80,16 @@ class ErrorScreen extends StatelessWidget {
                 color: Colors.black,
               ),
             ),
-            SizedBox(height: 2),
+            const SizedBox(height: 2),
             MyText(
               errorBody,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w400,
                 color: Colors.black,
               ),
             ),
-            SizedBox(height: 80),
+            const SizedBox(height: 80),
             actionButton,
           ],
         ),
@@ -102,7 +101,7 @@ class ErrorScreen extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: EdgeInsets.symmetric(
+        padding: const EdgeInsets.symmetric(
           horizontal: 25,
           vertical: 13,
         ),
@@ -119,7 +118,7 @@ class ErrorScreen extends StatelessWidget {
           ],
         ),
         child:
-            MyText(title, style: TextStyle(color: Colors.white, fontSize: 19)),
+            MyText(title, style: const TextStyle(color: Colors.white, fontSize: 19)),
       ),
     );
   }

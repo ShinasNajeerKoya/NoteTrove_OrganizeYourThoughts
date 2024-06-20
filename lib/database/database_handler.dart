@@ -18,7 +18,7 @@ class DatabaseHandler {
     try {
       notesCollection.doc(id).set(newNotes);
     } catch (errorCreating) {
-      print("Some error occurred while creating: $errorCreating");
+      log("Some error occurred while creating: $errorCreating");
     }
   }
 
@@ -35,7 +35,7 @@ class DatabaseHandler {
     try {
       notesCollection.doc(note.id).set(newNotes);
     } catch (errorUpdating) {
-      print("Some error occurred while updating: $errorUpdating");
+      log("Some error occurred while updating: $errorUpdating");
     }
   }
 

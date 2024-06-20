@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:note_app/theme/colors.dart';
-import 'package:note_app/widgets/MyText.dart';
+import 'package:note_app/widgets/my_text.dart';
 
 class SingleNoteContainerHomePage extends StatelessWidget {
   final String? title;
@@ -14,7 +14,7 @@ class SingleNoteContainerHomePage extends StatelessWidget {
   final bool isLeft;
 
   const SingleNoteContainerHomePage({
-    Key? key,
+    super.key,
     required this.title,
     required this.body,
     this.backgroundColor,
@@ -23,7 +23,7 @@ class SingleNoteContainerHomePage extends StatelessWidget {
     this.onTap,
     this.onLongPress,
     required this.isLeft,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -40,30 +40,30 @@ class SingleNoteContainerHomePage extends StatelessWidget {
           ),
         ),
         borderRadius: BorderRadius.only(
-          bottomRight: isLeft ? Radius.circular(60) : Radius.zero,
-          topLeft: isLeft ? Radius.zero : Radius.circular(60),
-          bottomLeft: Radius.circular(60),
-          topRight: Radius.circular(60),
+          bottomRight: isLeft ? const Radius.circular(60) : Radius.zero,
+          topLeft: isLeft ? Radius.zero : const Radius.circular(60),
+          bottomLeft: const Radius.circular(60),
+          topRight: const Radius.circular(60),
         ),
       );
     } else if (backgroundColor != null) {
       decoration = BoxDecoration(
         color: Color(backgroundColor!),
         borderRadius: BorderRadius.only(
-          bottomRight: isLeft ? Radius.circular(60) : Radius.zero,
-          topLeft: isLeft ? Radius.zero : Radius.circular(60),
-          bottomLeft: Radius.circular(60),
-          topRight: Radius.circular(60),
+          bottomRight: isLeft ? const Radius.circular(60) : Radius.zero,
+          topLeft: isLeft ? Radius.zero : const Radius.circular(60),
+          bottomLeft: const Radius.circular(60),
+          topRight: const Radius.circular(60),
         ),
       );
     } else {
       decoration = BoxDecoration(
         color: Colors.red, // Use a default background color
         borderRadius: BorderRadius.only(
-          bottomRight: isLeft ? Radius.circular(60) : Radius.zero,
-          topLeft: isLeft ? Radius.zero : Radius.circular(60),
-          bottomLeft: Radius.circular(60),
-          topRight: Radius.circular(60),
+          bottomRight: isLeft ? const Radius.circular(60) : Radius.zero,
+          topLeft: isLeft ? Radius.zero : const Radius.circular(60),
+          bottomLeft: const Radius.circular(60),
+          topRight: const Radius.circular(60),
         ),
       );
     }
@@ -72,13 +72,13 @@ class SingleNoteContainerHomePage extends StatelessWidget {
       onTap: onTap,
       onLongPress: onLongPress,
       child: Container(
-        padding: EdgeInsets.only(left: 12, right: 12, bottom: 12),
+        padding: const EdgeInsets.only(left: 12, right: 12, bottom: 12),
         decoration: decoration,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Center(
-              child: Container(
+              child: SizedBox(
                 height: 40,
                 width: 40,
                 child: SvgPicture.asset(
@@ -86,7 +86,7 @@ class SingleNoteContainerHomePage extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -95,7 +95,7 @@ class SingleNoteContainerHomePage extends StatelessWidget {
                   width: 80,
                   child: MyText(
                     title ?? 'No Title',
-                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
+                    style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
                     overflow: TextOverflow.ellipsis,
                     maxLines: 2,
                   ),
@@ -103,7 +103,7 @@ class SingleNoteContainerHomePage extends StatelessWidget {
                 Container(
                   height: 60,
                   width: 60,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     color: MyColors.black8,
                     shape: BoxShape.circle,
                   ),
@@ -114,13 +114,13 @@ class SingleNoteContainerHomePage extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Expanded(
               child: Container(
-                margin: EdgeInsets.only(left: 10),
+                margin: const EdgeInsets.only(left: 10),
                 child: MyText(
                   body ?? 'No Content',
-                  style: TextStyle(fontSize: 15, color: Colors.black38),
+                  style: const TextStyle(fontSize: 15, color: Colors.black38),
                   overflow: TextOverflow.ellipsis,
                   maxLines: 8,
                 ),

@@ -124,7 +124,7 @@
 // import 'package:note_app/screens/edit_note_page.dart';
 // import 'package:note_app/theme/colors.dart';
 // import 'package:note_app/utils/utility.dart';
-// import 'package:note_app/widgets/MyText.dart';
+// import 'package:note_app/widgets/my_text.dart';
 // import 'package:note_app/widgets/dialog_box_widget.dart';
 // import 'package:note_app/widgets/single_note_container_homepage_widget.dart';
 //

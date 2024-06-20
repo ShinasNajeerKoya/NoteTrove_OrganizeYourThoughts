@@ -29,7 +29,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
   }
 
   void startTimer() {
-    var duration = Duration(milliseconds: 1500);
+    var duration = const Duration(milliseconds: 2200);
     Timer(duration, navigateToNextPage);
   }
 
@@ -97,7 +97,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
           ),
           Center(
             child: Lottie.asset(
-              "assets/loading_animations/page_loading_animation.json",
+              "assets/loading_animations/loading_new.json",
               width: 200,
               height: 200,
             ),

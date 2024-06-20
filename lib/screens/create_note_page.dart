@@ -19,8 +19,8 @@ class CreateNotePage extends StatefulWidget {
 }
 
 class _CreateNotePageState extends State<CreateNotePage> {
-  TextEditingController _titleController = TextEditingController();
-  TextEditingController _bodyController = TextEditingController();
+  final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _bodyController = TextEditingController();
 
   bool _isCreatingNote = false;
 
@@ -30,7 +30,7 @@ class _CreateNotePageState extends State<CreateNotePage> {
   _createNote() {
     setState(() {
       _isCreatingNote = true;
-      Future.delayed(Duration(milliseconds: 1000)).then((value) {
+      Future.delayed(const Duration(milliseconds: 1000)).then((value) {
         //validation for empty title
         if (_titleController.text.isEmpty) {
           toast(message: "Please enter the title");
@@ -84,15 +84,15 @@ class _CreateNotePageState extends State<CreateNotePage> {
                   : null,
             ),
             child: _isCreatingNote
-                ? ErrorScreen(errorType: ErrorType.notFound404)
+                ? const ErrorScreen(errorType: ErrorType.notFound404)
                 : null,
           ),
           SingleChildScrollView(
-            physics: AlwaysScrollableScrollPhysics(),
+            physics: const AlwaysScrollableScrollPhysics(),
             child: AbsorbPointer(
               absorbing: _isCreatingNote,
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 50),
+                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 50),
                 child: Column(
                   children: [
                     Row(
@@ -108,30 +108,30 @@ class _CreateNotePageState extends State<CreateNotePage> {
                         )
                       ],
                     ),
-                    SizedBox(height: 30),
+                    const SizedBox(height: 30),
                     FormWidget(
                       controller: _titleController,
                       hintText: "Enter Your Title",
                       fontSize: 70,
                       maxLines: 2,
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     TextField(
                       controller: _bodyController,
                       minLines: 10,
                       maxLines: null,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         hintText: "Start Typing...",
                         hintStyle: TextStyle(fontSize: 20),
                         border: InputBorder.none,
                       ),
-                      style: TextStyle(fontSize: 20),
+                      style: const TextStyle(fontSize: 20),
                       onChanged: (text) {
                         setState(() {});
                       },
                     ),
-                    SizedBox(height: 10),
-                    Container(
+                    const SizedBox(height: 10),
+                    SizedBox(
                       height: 80,
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
@@ -149,7 +149,7 @@ class _CreateNotePageState extends State<CreateNotePage> {
                             child: Container(
                               height: 60,
                               width: 60,
-                              margin: EdgeInsets.only(right: 10),
+                              margin: const EdgeInsets.only(right: 10),
                               decoration: BoxDecoration(
                                 color: singleColor,
                                 shape: BoxShape.circle,
@@ -165,8 +165,8 @@ class _CreateNotePageState extends State<CreateNotePage> {
                         },
                       ),
                     ),
-                    SizedBox(height: 10),
-                    Container(
+                    const SizedBox(height: 10),
+                    SizedBox(
                       height: 80,
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
@@ -184,7 +184,7 @@ class _CreateNotePageState extends State<CreateNotePage> {
                             child: Container(
                               height: 60,
                               width: 60,
-                              margin: EdgeInsets.only(right: 10),
+                              margin: const EdgeInsets.only(right: 10),
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 border: Border.all(

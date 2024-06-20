@@ -22,7 +22,7 @@ class ButtonWidget extends StatelessWidget {
         height: height,
         width: width,
         decoration:
-            BoxDecoration(shape: BoxShape.circle, color: MyColors.black18),
+            const BoxDecoration(shape: BoxShape.circle, color: MyColors.black18),
         child: Center(
           child: Icon(
             icon,

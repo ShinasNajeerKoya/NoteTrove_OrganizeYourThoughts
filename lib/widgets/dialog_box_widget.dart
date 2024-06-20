@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:note_app/widgets/MyText.dart';
+import 'package:note_app/widgets/my_text.dart';
 
 showDialogBoxWidget(
   BuildContext context, {
@@ -24,7 +23,7 @@ showDialogBoxWidget(
             width: width,
             height: height,
             margin: EdgeInsets.zero,
-            padding: EdgeInsets.only(top: 20, left: 20, right: 20),
+            padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -34,7 +33,7 @@ showDialogBoxWidget(
                       Container(
                         height: 60,
                         width: 60,
-                        margin: EdgeInsets.only(left: 10, top: 0),
+                        margin: const EdgeInsets.only(left: 10, top: 0),
                         child: Image.asset(
                           popupIconAddress!,
                           fit: BoxFit.fitHeight,
@@ -63,22 +62,22 @@ showDialogBoxWidget(
                         ),
                       )
                     ]),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 MyText(
                   title!,
-                  style: TextStyle(fontSize: 23, fontWeight: FontWeight.w700),
+                  style: const TextStyle(fontSize: 23, fontWeight: FontWeight.w700),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 8,
                 ),
                 MyText(
                   subTitle!,
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -100,7 +99,7 @@ showDialogBoxWidget(
                         )),
                       ),
                     ),
-                    SizedBox(width: 8),
+                    const SizedBox(width: 8),
                     Expanded(
                       child: GestureDetector(
                         onTap: onTapYes,
@@ -109,7 +108,7 @@ showDialogBoxWidget(
                           decoration: BoxDecoration(
                               color: Colors.green.shade700,
                               borderRadius: BorderRadius.circular(18)),
-                          child: Center(
+                          child: const Center(
                               child: MyText(
                             "Yes",
                             style: TextStyle(

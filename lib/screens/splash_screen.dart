@@ -19,13 +19,13 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   startTimer() {
-    var duration = Duration(milliseconds: 3800);
+    var duration = const Duration(milliseconds: 2900);
     return Timer(duration, navigateToHomePage);
   }
 
   void navigateToHomePage() {
     Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => HomePage()));
+        context, MaterialPageRoute(builder: (context) => const HomePage()));
   }
 
   @override
@@ -33,13 +33,12 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
             image: DecorationImage(
                 image: AssetImage("assets/images/ab_bg_w_normal.png"),
                 fit: BoxFit.fitHeight)),
         child: Center(
-          child: Lottie.asset(
-              "assets/loading_animations/splash_screen_animation.json"),
+          child: Lottie.asset("assets/loading_animations/splash_new.json"),
         ),
       ),
     );
