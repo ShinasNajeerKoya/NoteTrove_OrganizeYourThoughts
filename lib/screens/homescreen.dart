@@ -7,6 +7,7 @@ import 'package:note_app/models/note_model.dart';
 import 'package:note_app/screens/loading_screen.dart';
 import 'package:note_app/theme/colors.dart';
 import 'package:note_app/utils/utility.dart';
+import 'package:note_app/widgets/loading_widget.dart';
 import 'package:note_app/widgets/my_text.dart';
 import 'package:note_app/widgets/dialog_box_widget.dart';
 import 'package:note_app/widgets/floating_drawer_button_with_animation.dart';
@@ -21,10 +22,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
-  // drawer section start
-
-  //drawer section end
-
   void deleteNoteErrorHandler(NoteModel noteIndex) {
     try {
       if (noteIndex.id == null || noteIndex.id!.isEmpty) {
@@ -41,12 +38,22 @@ class _HomePageState extends State<HomePage>
     }
   }
 
+  int selectedIndex = 0;
+
+  List<Map<String, String>> categoryListModel = [
+    {"title": "All", "noteCount": "25"},
+    {"title": "Important", "noteCount": "10"},
+    {"title": "To-do", "noteCount": "15"},
+    {"title": "Reminders", "noteCount": "7"},
+    {"title": "Journal", "noteCount": "5"},
+  ];
+
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
 
-    //List of items for the drop down drawer
+    //list of items for the drop down drawer
     List<FloatingDrawerItem> items = [
       FloatingDrawerItem(
         icon: CupertinoIcons.square_grid_2x2,
@@ -73,9 +80,11 @@ class _HomePageState extends State<HomePage>
         height: height,
         width: width,
         decoration: const BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage("assets/images/ab_bg_w_dark.png"),
-                fit: BoxFit.cover)),
+          image: DecorationImage(
+            image: AssetImage("assets/images/ab_bg_w_dark.png"),
+            fit: BoxFit.cover,
+          ),
+        ),
         child: Stack(
           children: [
             SafeArea(
@@ -98,47 +107,69 @@ class _HomePageState extends State<HomePage>
                         height: 65,
                         child: ListView.builder(
                           scrollDirection: Axis.horizontal,
-                          //todo - replace this with state
-                          itemCount: 5,
-                          itemBuilder: (context, index) => GestureDetector(
-                            onTap: () {
-                              log("Category tapped: $index");
-                            },
-                            child: Container(
-                              alignment: Alignment.center,
-                              padding: const EdgeInsets.symmetric(horizontal: 20),
-                              margin: const EdgeInsets.only(right: 10),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(75),
-                                border:
-                                    Border.all(width: 1, color: Colors.black),
-                              ),
-                              child: Row(
-                                children: [
-                                  const MyText(
-                                    "All", // Replace with category text
-                                    style: TextStyle(
-                                        fontSize: 28, color: Colors.black),
+                          itemCount: categoryListModel.length,
+                          itemBuilder: (context, index) {
+                            bool isSelected = index == selectedIndex;
+                            return GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  selectedIndex = index;
+                                });
+                                log("Category tapped: ${categoryListModel[index]['title']}");
+                              },
+                              child: Container(
+                                alignment: Alignment.center,
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 20),
+                                margin: const EdgeInsets.only(right: 10),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(75),
+                                  border: Border.all(
+                                    width: 1,
+                                    color:
+                                        isSelected ? Colors.black : Colors.grey,
                                   ),
-                                  const SizedBox(width: 5),
-                                  Container(
-                                    height: 25,
-                                    width: 25,
-                                    alignment: Alignment.center,
-                                    decoration: const BoxDecoration(
-                                      color: MyColors.backGroundDarkGrey2,
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: const MyText(
-                                      "25",
+                                ),
+                                child: Row(
+                                  children: [
+                                    MyText(
+                                      categoryListModel[index]['title']!,
                                       style: TextStyle(
-                                          color: Colors.white, fontSize: 13),
+                                        fontSize: 28,
+                                        color: isSelected
+                                            ? Colors.black
+                                            : Colors.grey,
+                                      ),
                                     ),
-                                  )
-                                ],
+                                    if (isSelected)
+                                      Row(
+                                        children: [
+                                          const SizedBox(width: 5),
+                                          Container(
+                                            height: 25,
+                                            width: 25,
+                                            alignment: Alignment.center,
+                                            decoration: const BoxDecoration(
+                                              color:
+                                                  MyColors.backGroundDarkGrey2,
+                                              shape: BoxShape.circle,
+                                            ),
+                                            child: MyText(
+                                              categoryListModel[index]
+                                                  ['noteCount']!,
+                                              style: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 13,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                  ],
+                                ),
                               ),
-                            ),
-                          ),
+                            );
+                          },
                         ),
                       ),
                     ),
@@ -148,7 +179,9 @@ class _HomePageState extends State<HomePage>
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
-                          return const Center(child: CircularProgressIndicator());
+                          return const Center(
+                            child: CustomLoadingWidget(),
+                          );
                         }
                         if (!snapshot.hasData || snapshot.data!.isEmpty) {
                           return const Center(

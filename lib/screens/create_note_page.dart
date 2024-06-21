@@ -2,11 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:note_app/database/database_handler.dart';
 import 'package:note_app/models/note_model.dart';
-import 'package:note_app/screens/error_screen.dart';
 import 'package:note_app/theme/colors.dart';
 import 'package:note_app/utils/utility.dart';
 import 'package:note_app/widgets/button_widget.dart';
 import 'package:note_app/widgets/form_widget.dart';
+import 'package:note_app/widgets/loading_widget.dart';
 
 class CreateNotePage extends StatefulWidget {
   final double height;
@@ -83,16 +83,16 @@ class _CreateNotePageState extends State<CreateNotePage> {
                     )
                   : null,
             ),
-            child: _isCreatingNote
-                ? const ErrorScreen(errorType: ErrorType.notFound404)
-                : null,
+            child:
+                _isCreatingNote ? const Center(child: CustomLoadingWidget()) : null,
           ),
           SingleChildScrollView(
             physics: const AlwaysScrollableScrollPhysics(),
             child: AbsorbPointer(
               absorbing: _isCreatingNote,
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 50),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 15, vertical: 50),
                 child: Column(
                   children: [
                     Row(

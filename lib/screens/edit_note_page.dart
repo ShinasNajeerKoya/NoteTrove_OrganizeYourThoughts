@@ -7,6 +7,7 @@ import 'package:note_app/utils/utility.dart';
 import 'package:note_app/widgets/button_widget.dart';
 import 'package:note_app/widgets/dialog_box_widget.dart';
 import 'package:note_app/widgets/form_widget.dart';
+import 'package:note_app/widgets/loading_widget.dart';
 
 class EditNotePage extends StatefulWidget {
   final double height;
@@ -97,9 +98,7 @@ class _EditNotePageState extends State<EditNotePage> {
                     )
                   : null,
             ),
-            child: _isEditingNote
-                ? const Center(child: CircularProgressIndicator())
-                : null,
+            child: _isEditingNote ? const Center(child: CustomLoadingWidget()) : null,
           ),
           SingleChildScrollView(
             physics: const AlwaysScrollableScrollPhysics(),
@@ -125,8 +124,7 @@ class _EditNotePageState extends State<EditNotePage> {
                               height: 240,
                               width: widget.width,
                               title: "Attention!!",
-                              subTitle:
-                                  "Save changes to your notes?",
+                              subTitle: "Save changes to your notes?",
                               popupIconAddress:
                                   "assets/images/save_icon_image.png",
                               onTapYes: () {
