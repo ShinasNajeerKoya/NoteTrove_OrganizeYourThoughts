@@ -20,6 +20,11 @@ notes and enhance your productivity.
 
   <img src="https://github.com/ShinasKoya00/NoteTrove_OrganizeYourThoughts/blob/master/assets/application_snapshots/splash_1.jpg" width="160" /> <img src="https://github.com/ShinasKoya00/NoteTrove_OrganizeYourThoughts/blob/master/assets/application_snapshots/splash_2.jpg" width="160" /> <img src="https://github.com/ShinasKoya00/NoteTrove_OrganizeYourThoughts/blob/master/assets/application_snapshots/homepage_1.jpg" width="160" /> <img src="https://github.com/ShinasKoya00/NoteTrove_OrganizeYourThoughts/blob/master/assets/application_snapshots/homepage_2.jpg" width="160" /> <img src="https://github.com/ShinasKoya00/NoteTrove_OrganizeYourThoughts/blob/master/assets/application_snapshots/notes_list.jpg" width="160" />
 
+  <img src="https://github.com/ShinasKoya00/NoteTrove_OrganizeYourThoughts/blob/master/assets/application_snapshots/loading_animation.jpg" width="160" /> <img src="https://github.com/ShinasKoya00/NoteTrove_OrganizeYourThoughts/blob/master/assets/application_snapshots/create_note_page.jpg" width="160" /> <img src="https://github.com/ShinasKoya00/NoteTrove_OrganizeYourThoughts/blob/master/assets/application_snapshots/edit_loading_animation.jpg" width="160" /> <img src="https://github.com/ShinasKoya00/NoteTrove_OrganizeYourThoughts/blob/master/assets/application_snapshots/edit_note_page.jpg" width="160" /> <img src="https://github.com/ShinasKoya00/NoteTrove_OrganizeYourThoughts/blob/master/assets/application_snapshots/save_confirmation.jpg" width="160" />
+
+  <img src="https://github.com/ShinasKoya00/NoteTrove_OrganizeYourThoughts/blob/master/assets/application_snapshots/delete_confirmation.jpg" width="160" /> <img src="https://github.com/ShinasKoya00/NoteTrove_OrganizeYourThoughts/blob/master/assets/application_snapshots/page_not_found_error.jpg" width="160" /> <img src="https://github.com/ShinasKoya00/NoteTrove_OrganizeYourThoughts/blob/master/assets/application_snapshots/no_internet_error.jpg" width="160" />
+
+
 ## Installation
 
 To get started with NoteTrove, follow these steps:
