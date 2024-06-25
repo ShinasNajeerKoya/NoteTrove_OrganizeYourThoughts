@@ -6,11 +6,12 @@ import 'package:note_app/database/database_handler.dart';
 import 'package:note_app/models/note_model.dart';
 import 'package:note_app/screens/loading_screen.dart';
 import 'package:note_app/theme/colors.dart';
+import 'package:note_app/utils/size_configuration.dart';
 import 'package:note_app/utils/utility.dart';
-import 'package:note_app/widgets/loading_widget.dart';
-import 'package:note_app/widgets/my_text.dart';
 import 'package:note_app/widgets/dialog_box_widget.dart';
 import 'package:note_app/widgets/floating_drawer_button_with_animation.dart';
+import 'package:note_app/widgets/loading_widget.dart';
+import 'package:note_app/widgets/my_text.dart';
 import 'package:note_app/widgets/single_note_container_homepage_widget.dart';
 
 class HomePage extends StatefulWidget {
@@ -20,16 +21,12 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage>
-    with SingleTickerProviderStateMixin {
+class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin {
   void deleteNoteErrorHandler(NoteModel noteIndex) {
     try {
       if (noteIndex.id == null || noteIndex.id!.isEmpty) {
-        toast(
-            message:
-                "Selected note's ID is missing or corrupted in the database.");
-        throw Exception(
-            "Selected note's ID is missing or corrupted in the database.");
+        toast(message: "Selected note's ID is missing or corrupted in the database.");
+        throw Exception("Selected note's ID is missing or corrupted in the database.");
       }
 
       DatabaseHandler.deleteNote(noteIndex.id!);
@@ -41,19 +38,22 @@ class _HomePageState extends State<HomePage>
   int selectedIndex = 0;
 
   List<Map<String, String>> categoryListModel = [
-    {"title": "All", "noteCount": "25"},
+    {"title": "All", "noteCount": "34"},
     {"title": "Important", "noteCount": "10"},
     {"title": "To-do", "noteCount": "15"},
     {"title": "Reminders", "noteCount": "7"},
     {"title": "Journal", "noteCount": "5"},
+    {"title": "Favorite", "noteCount": "2"},
+    {"title": "Casual", "noteCount": "7"},
   ];
 
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.height;
-    final width = MediaQuery.of(context).size.width;
+    SizeConfig.init(context); // to get the current size of the screen for MediaQuery
+    final height = SizeConfig.screenHeight;
+    final width = SizeConfig.screenWidth;
 
-    //list of items for the drop down drawer
+    // list of items for the drop down drawer
     List<FloatingDrawerItem> items = [
       FloatingDrawerItem(
         icon: CupertinoIcons.square_grid_2x2,
@@ -93,18 +93,18 @@ class _HomePageState extends State<HomePage>
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Padding(
-                      padding: EdgeInsets.only(left: 20, top: 30),
+                    Padding(
+                      padding: EdgeInsets.only(left: SizeConfig.getWidth(20), top: SizeConfig.getHeight(30)),
                       child: MyText(
                         "My\nNotes",
-                        style: TextStyle(color: Colors.black, fontSize: 70),
+                        style: TextStyle(color: Colors.black, fontSize: SizeConfig.getFontSize(70)),
                       ),
                     ),
-                    const SizedBox(height: 20),
+                    SizedBox(height: SizeConfig.getHeight(20)),
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                      padding: EdgeInsets.symmetric(horizontal: SizeConfig.getWidth(20)),
                       child: SizedBox(
-                        height: 65,
+                        height: SizeConfig.getHeight(65),
                         child: ListView.builder(
                           scrollDirection: Axis.horizontal,
                           itemCount: categoryListModel.length,
@@ -119,15 +119,13 @@ class _HomePageState extends State<HomePage>
                               },
                               child: Container(
                                 alignment: Alignment.center,
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 20),
-                                margin: const EdgeInsets.only(right: 10),
+                                padding: EdgeInsets.symmetric(horizontal: SizeConfig.getWidth(20)),
+                                margin: EdgeInsets.only(right: SizeConfig.getWidth(10)),
                                 decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(75),
+                                  borderRadius: BorderRadius.circular(SizeConfig.getWidth(75)),
                                   border: Border.all(
-                                    width: 1,
-                                    color:
-                                        isSelected ? Colors.black : Colors.grey,
+                                    width: SizeConfig.getWidth(1),
+                                    color: isSelected ? Colors.black : Colors.grey,
                                   ),
                                 ),
                                 child: Row(
@@ -135,31 +133,27 @@ class _HomePageState extends State<HomePage>
                                     MyText(
                                       categoryListModel[index]['title']!,
                                       style: TextStyle(
-                                        fontSize: 28,
-                                        color: isSelected
-                                            ? Colors.black
-                                            : Colors.grey,
+                                        fontSize: SizeConfig.getFontSize(28),
+                                        color: isSelected ? Colors.black : Colors.grey,
                                       ),
                                     ),
                                     if (isSelected)
                                       Row(
                                         children: [
-                                          const SizedBox(width: 5),
+                                          SizedBox(width: SizeConfig.getWidth(5)),
                                           Container(
-                                            height: 25,
-                                            width: 25,
+                                            height: SizeConfig.getHeight(25),
+                                            width: SizeConfig.getWidth(25),
                                             alignment: Alignment.center,
                                             decoration: const BoxDecoration(
-                                              color:
-                                                  MyColors.backGroundDarkGrey2,
+                                              color: MyColors.backGroundDarkGrey2,
                                               shape: BoxShape.circle,
                                             ),
                                             child: MyText(
-                                              categoryListModel[index]
-                                                  ['noteCount']!,
-                                              style: const TextStyle(
+                                              categoryListModel[index]['noteCount']!,
+                                              style: TextStyle(
                                                 color: Colors.white,
-                                                fontSize: 13,
+                                                fontSize: SizeConfig.getFontSize(13),
                                               ),
                                             ),
                                           ),
@@ -173,12 +167,11 @@ class _HomePageState extends State<HomePage>
                         ),
                       ),
                     ),
-                    const SizedBox(height: 20),
+                    SizedBox(height: SizeConfig.getHeight(20)),
                     StreamBuilder<List<NoteModel>>(
                       stream: DatabaseHandler.getNotes(),
                       builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
                           return const Center(
                             child: CustomLoadingWidget(),
                           );
@@ -194,16 +187,18 @@ class _HomePageState extends State<HomePage>
 
                         final notes = snapshot.data!;
                         return Padding(
-                          padding: const EdgeInsets.only(
-                              left: 15, right: 15, top: 25, bottom: 20),
+                          padding: EdgeInsets.only(
+                              left: SizeConfig.getWidth(15),
+                              right: SizeConfig.getWidth(15),
+                              top: SizeConfig.getHeight(25),
+                              bottom: SizeConfig.getHeight(20)),
                           child: GridView.builder(
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
+                            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 2,
-                              crossAxisSpacing: 4,
-                              mainAxisSpacing: 10,
+                              crossAxisSpacing: SizeConfig.getWidth(4),
+                              mainAxisSpacing: SizeConfig.getHeight(10),
                               childAspectRatio: 0.60,
                             ),
                             itemCount: notes.length,
@@ -230,13 +225,11 @@ class _HomePageState extends State<HomePage>
                                 onLongPress: () {
                                   showDialogBoxWidget(
                                     context,
-                                    height: 230,
-                                    width: width,
+                                    height: SizeConfig.getHeight(240),
+                                    width: SizeConfig.screenWidth,
                                     title: "Warning!!",
-                                    subTitle:
-                                        "Are you sure you want to delete this note?",
-                                    popupIconAddress:
-                                        "assets/images/delete_image.png",
+                                    subTitle: "Are you sure you want to delete this note?",
+                                    popupIconAddress: "assets/images/delete_image.png",
                                     onTapYes: () {
                                       deleteNoteErrorHandler(notes[index]);
                                       Navigator.pop(context);
@@ -254,11 +247,11 @@ class _HomePageState extends State<HomePage>
               ),
             ),
             Positioned(
-              top: 50,
-              right: 10,
-              child: SizedBox(
-                height: buttonSize * (items.length + 1),
-                width: 80,
+              top: SizeConfig.getHeight(50),
+              right: SizeConfig.getWidth(10),
+              child: Container(
+                height: SizeConfig.getWidth(75.0) * (items.length + 1),
+                width: SizeConfig.getWidth(80),
                 child: Center(
                   child: FloatingDrawerButtonWithAnimation(
                     items: items,

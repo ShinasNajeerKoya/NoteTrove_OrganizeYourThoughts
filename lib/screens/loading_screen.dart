@@ -1,9 +1,11 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:note_app/models/note_model.dart';
 import 'package:note_app/screens/create_note_page.dart';
 import 'package:note_app/screens/edit_note_page.dart';
+import 'package:note_app/utils/size_configuration.dart'; // Assuming SizeConfig is defined for responsive design
 
 class LoadingScreen extends StatefulWidget {
   final double height;
@@ -11,11 +13,11 @@ class LoadingScreen extends StatefulWidget {
   final NoteModel? noteModel;
 
   const LoadingScreen({
-    super.key,
+    Key? key, // Corrected parameter name
     required this.height,
     required this.width,
-    this.noteModel, // NoteModel is now nullable
-  });
+    this.noteModel,
+  }) : super(key: key);
 
   @override
   _LoadingScreenState createState() => _LoadingScreenState();
@@ -45,7 +47,6 @@ class _LoadingScreenState extends State<LoadingScreen> {
         ),
       );
     } else if (widget.noteModel != null) {
-      // Navigate to EditNotePage if noteModel is not null and id is not null
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
@@ -73,8 +74,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
         backgroundColor = Colors.red;
       }
     } else {
-      loadingBackgroundImage =
-          "assets/images/ab_bg_w_normal.png"; // Default to an image if noteModel is null
+      loadingBackgroundImage = "assets/images/ab_bg_w_normal.png"; // Default to an image if noteModel is null
     }
 
     return Scaffold(
@@ -82,8 +82,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
       body: Stack(
         children: [
           Positioned.fill(
-            child: widget.noteModel != null &&
-                    widget.noteModel!.imageAddress != null
+            child: widget.noteModel != null && widget.noteModel!.imageAddress != null
                 ? Image.asset(
                     widget.noteModel!.imageAddress!,
                     fit: BoxFit.cover,
@@ -98,8 +97,8 @@ class _LoadingScreenState extends State<LoadingScreen> {
           Center(
             child: Lottie.asset(
               "assets/loading_animations/loading_new.json",
-              width: 200,
-              height: 200,
+              width: SizeConfig.getWidth(200),
+              height: SizeConfig.getHeight(200),
             ),
           ),
         ],

@@ -1,5 +1,5 @@
-
 import 'package:flutter/material.dart';
+import 'package:note_app/utils/size_configuration.dart';
 
 class MyText extends StatelessWidget {
   final String data;
@@ -24,6 +24,7 @@ class MyText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig.init(context);
     return GestureDetector(
       onTap: onTap,
       child: Text(
@@ -33,7 +34,7 @@ class MyText extends StatelessWidget {
             ) ??
             TextStyle(
               fontFamily: fontFamily,
-              fontSize: 20,
+              fontSize: SizeConfig.getFontSize(20),
             ),
         textAlign: textAlign,
         overflow: overflow,

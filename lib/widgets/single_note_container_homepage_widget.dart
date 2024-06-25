@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:note_app/theme/colors.dart';
+import 'package:note_app/utils/size_configuration.dart';
 import 'package:note_app/widgets/my_text.dart';
 
 class SingleNoteContainerHomePage extends StatelessWidget {
@@ -28,6 +29,8 @@ class SingleNoteContainerHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     BoxDecoration decoration;
+    SizeConfig.init(context); // to get the current size of the screen for MediaQuery
+
 
     if (imageAddress != null) {
       decoration = BoxDecoration(
@@ -41,29 +44,29 @@ class SingleNoteContainerHomePage extends StatelessWidget {
         ),
         borderRadius: BorderRadius.only(
           bottomRight: isLeft ? const Radius.circular(60) : Radius.zero,
-          topLeft: isLeft ? Radius.zero : const Radius.circular(60),
-          bottomLeft: const Radius.circular(60),
-          topRight: const Radius.circular(60),
+          topLeft: isLeft ? Radius.zero : Radius.circular(SizeConfig.getRadius(60)),
+          bottomLeft: Radius.circular(SizeConfig.getRadius(60)),
+          topRight: Radius.circular(SizeConfig.getRadius(60)),
         ),
       );
     } else if (backgroundColor != null) {
       decoration = BoxDecoration(
         color: Color(backgroundColor!),
         borderRadius: BorderRadius.only(
-          bottomRight: isLeft ? const Radius.circular(60) : Radius.zero,
-          topLeft: isLeft ? Radius.zero : const Radius.circular(60),
-          bottomLeft: const Radius.circular(60),
-          topRight: const Radius.circular(60),
+          bottomRight: isLeft ? Radius.circular(SizeConfig.getRadius(60)) : Radius.zero,
+          topLeft: isLeft ? Radius.zero : Radius.circular(SizeConfig.getRadius(60)),
+          bottomLeft: Radius.circular(SizeConfig.getRadius(60)),
+          topRight: Radius.circular(SizeConfig.getRadius(60)),
         ),
       );
     } else {
       decoration = BoxDecoration(
         color: Colors.red, // Use a default background color
         borderRadius: BorderRadius.only(
-          bottomRight: isLeft ? const Radius.circular(60) : Radius.zero,
-          topLeft: isLeft ? Radius.zero : const Radius.circular(60),
-          bottomLeft: const Radius.circular(60),
-          topRight: const Radius.circular(60),
+          bottomRight: isLeft ? Radius.circular(SizeConfig.getRadius(60)) : Radius.zero,
+          topLeft: isLeft ? Radius.zero : Radius.circular(SizeConfig.getRadius(60)),
+          bottomLeft: Radius.circular(SizeConfig.getRadius(60)),
+          topRight: Radius.circular(SizeConfig.getRadius(60)),
         ),
       );
     }
@@ -72,57 +75,71 @@ class SingleNoteContainerHomePage extends StatelessWidget {
       onTap: onTap,
       onLongPress: onLongPress,
       child: Container(
-        padding: const EdgeInsets.only(left: 12, right: 12, bottom: 12),
+        padding: EdgeInsets.only(
+          left: SizeConfig.getHeight(12),
+          right: SizeConfig.getHeight(12),
+          bottom: SizeConfig.getHeight(12),
+        ),
         decoration: decoration,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Center(
               child: SizedBox(
-                height: 40,
-                width: 40,
+                height: SizeConfig.getHeight(40),
+                width: SizeConfig.getWidth(40),
                 child: SvgPicture.asset(
                   "assets/svg/more_new.svg",
                 ),
               ),
             ),
-            const SizedBox(height: 10),
+            SizedBox(height: SizeConfig.getHeight(10)),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 SizedBox(
-                  height: 50,
-                  width: 80,
+                  height: SizeConfig.getHeight(60),
+                  width: SizeConfig.getWidth(100),
                   child: MyText(
                     title ?? 'No Title',
-                    style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
+                    style: TextStyle(fontSize: SizeConfig.getFontSize(22), fontWeight: FontWeight.w600),
                     overflow: TextOverflow.ellipsis,
                     maxLines: 2,
                   ),
                 ),
                 Container(
-                  height: 60,
-                  width: 60,
+                  height: SizeConfig.getHeight(60),
+                  width: SizeConfig.getWidth(60),
                   decoration: const BoxDecoration(
                     color: MyColors.black8,
                     shape: BoxShape.circle,
                   ),
                   child: Icon(
                     heartIcon,
-                    size: 26,
+                    size: SizeConfig.getIconSize(26),
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 10),
+            SizedBox(
+              height: SizeConfig.getHeight(10),
+            ),
             Expanded(
               child: Container(
-                margin: const EdgeInsets.only(left: 10),
-                child: MyText(
-                  body ?? 'No Content',
-                  style: const TextStyle(fontSize: 15, color: Colors.black38),
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 8,
+                margin: EdgeInsets.only(left: SizeConfig.getHeight(10), bottom: SizeConfig.getHeight(20)),
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    double containerHeight = constraints.maxHeight;
+                    int maxLines =
+                        SizeConfig.getMaxLines(containerHeight, 20); // Adjust line height as needed
+
+                    return MyText(
+                      body ?? 'No Content',
+                      style: TextStyle(fontSize: SizeConfig.getIconSize(15), color: Colors.black38),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: maxLines,
+                    );
+                  },
                 ),
               ),
             ),

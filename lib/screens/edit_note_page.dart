@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:note_app/database/database_handler.dart';
 import 'package:note_app/models/note_model.dart';
 import 'package:note_app/theme/colors.dart';
+import 'package:note_app/utils/size_configuration.dart';
 import 'package:note_app/utils/utility.dart';
 import 'package:note_app/widgets/button_widget.dart';
 import 'package:note_app/widgets/dialog_box_widget.dart';
@@ -15,11 +16,11 @@ class EditNotePage extends StatefulWidget {
   final NoteModel noteModel;
 
   const EditNotePage({
-    super.key,
+    Key? key,
     required this.height,
     required this.width,
     required this.noteModel,
-  });
+  }) : super(key: key);
 
   @override
   State<EditNotePage> createState() => _EditNotePageState();
@@ -36,7 +37,7 @@ class _EditNotePageState extends State<EditNotePage> {
     setState(() {
       _isEditingNote = true;
       Future.delayed(const Duration(milliseconds: 1000)).then((value) {
-        //validation for empty title
+        // Validation for empty title
         if (_titleController.text.isEmpty) {
           toast(message: "Please enter the title");
           setState(() {
@@ -44,7 +45,7 @@ class _EditNotePageState extends State<EditNotePage> {
           });
           return;
         }
-        // validation for empty body
+        // Validation for empty body
         if (_bodyController.text.isEmpty) {
           toast(message: "Please enter body for the note");
           setState(() {
@@ -105,62 +106,73 @@ class _EditNotePageState extends State<EditNotePage> {
             child: AbsorbPointer(
               absorbing: _isEditingNote,
               child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 15, vertical: 50),
+                padding: EdgeInsets.symmetric(
+                  horizontal: SizeConfig.getWidth(15),
+                  vertical: SizeConfig.getHeight(50),
+                ),
                 child: Column(
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        ButtonWidget(
-                          icon: CupertinoIcons.left_chevron,
-                          onTap: () => Navigator.pop(context),
+                        SizedBox(
+                          width: SizeConfig.getWidth(75),
+                          child: ButtonWidget(
+                            icon: CupertinoIcons.left_chevron,
+                            onTap: () => Navigator.pop(context),
+                            height: SizeConfig.getHeight(75),
+                            width: SizeConfig.getWidth(75),
+                          ),
                         ),
-                        ButtonWidget(
-                          icon: CupertinoIcons.floppy_disk,
-                          onTap: () {
-                            showDialogBoxWidget(
-                              context,
-                              height: 240,
-                              width: widget.width,
-                              title: "Attention!!",
-                              subTitle: "Save changes to your notes?",
-                              popupIconAddress:
-                                  "assets/images/save_icon_image.png",
-                              onTapYes: () {
-                                _editNote();
-                                Navigator.pop(context);
-                              },
-                            );
-                          },
+                        SizedBox(
+                          width: SizeConfig.getWidth(75),
+                          child: ButtonWidget(
+                            height: SizeConfig.getHeight(75),
+                            width: SizeConfig.getWidth(75),
+                            icon: CupertinoIcons.floppy_disk,
+                            onTap: () {
+                              showDialogBoxWidget(
+                                context,
+                                height: SizeConfig.getHeight(240),
+                                width: widget.width,
+                                title: "Attention!!",
+                                subTitle: "Save changes to your notes?",
+                                popupIconAddress: "assets/images/save_icon_image.png",
+                                onTapYes: () {
+                                  _editNote();
+                                  Navigator.pop(context);
+                                },
+                              );
+                            },
+                          ),
                         )
                       ],
                     ),
-                    const SizedBox(height: 30),
+                    SizedBox(height: SizeConfig.getHeight(30)),
                     FormWidget(
                       controller: _titleController,
                       hintText: "Enter Your Title",
-                      fontSize: 70,
+                      fontSize: SizeConfig.getFontSize(70),
                       maxLines: 2,
                     ),
-                    const SizedBox(height: 10),
+                    SizedBox(height: SizeConfig.getHeight(10)),
                     TextField(
                       controller: _bodyController,
                       minLines: 10,
                       maxLines: null,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         hintText: "Start Typing...",
-                        hintStyle: TextStyle(fontSize: 20),
+                        hintStyle: TextStyle(fontSize: SizeConfig.getFontSize(20)),
                         border: InputBorder.none,
                       ),
-                      style: const TextStyle(fontSize: 20),
+                      style: TextStyle(fontSize: SizeConfig.getFontSize(20)),
                       onChanged: (text) {
                         setState(() {});
                       },
                     ),
-                    const SizedBox(height: 10),
+                    SizedBox(height: SizeConfig.getHeight(10)),
                     SizedBox(
-                      height: 80,
+                      height: SizeConfig.getHeight(80),
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
                         itemCount: preDefinedNoteColors.length,
@@ -170,22 +182,20 @@ class _EditNotePageState extends State<EditNotePage> {
                             onTap: () {
                               setState(() {
                                 selectedColor = singleColor.value;
-                                selectedImage =
-                                    null; // Reset the selected image
+                                selectedImage = null; // Reset the selected image
                               });
                             },
                             child: Container(
-                              height: 60,
-                              width: 60,
-                              margin: const EdgeInsets.only(right: 10),
+                              height: SizeConfig.getHeight(60),
+                              width: SizeConfig.getWidth(60),
+                              margin: EdgeInsets.only(right: SizeConfig.getWidth(10)),
                               decoration: BoxDecoration(
                                 color: singleColor,
                                 shape: BoxShape.circle,
                                 border: Border.all(
-                                  width: 2,
-                                  color: selectedColor == singleColor.value
-                                      ? Colors.white
-                                      : Colors.transparent,
+                                  width: SizeConfig.getWidth(2),
+                                  color:
+                                      selectedColor == singleColor.value ? Colors.white : Colors.transparent,
                                 ),
                               ),
                             ),
@@ -193,9 +203,9 @@ class _EditNotePageState extends State<EditNotePage> {
                         },
                       ),
                     ),
-                    const SizedBox(height: 10),
+                    SizedBox(height: SizeConfig.getHeight(10)),
                     SizedBox(
-                      height: 80,
+                      height: SizeConfig.getHeight(80),
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
                         itemCount: preDefinesNoteImages.length,
@@ -209,16 +219,14 @@ class _EditNotePageState extends State<EditNotePage> {
                               });
                             },
                             child: Container(
-                              height: 60,
-                              width: 60,
-                              margin: const EdgeInsets.only(right: 10),
+                              height: SizeConfig.getHeight(60),
+                              width: SizeConfig.getWidth(60),
+                              margin: EdgeInsets.only(right: SizeConfig.getWidth(10)),
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 border: Border.all(
-                                  width: 2,
-                                  color: selectedImage == image
-                                      ? Colors.white
-                                      : Colors.transparent,
+                                  width: SizeConfig.getWidth(2),
+                                  color: selectedImage == image ? Colors.white : Colors.transparent,
                                 ),
                                 image: DecorationImage(
                                   image: AssetImage(image),

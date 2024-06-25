@@ -1,8 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-
-const buttonSize = 75.0;
+import 'package:note_app/utils/size_configuration.dart';
 
 class FloatingDrawerButtonWithAnimation extends StatefulWidget {
   final List<FloatingDrawerItem> items;
@@ -13,12 +12,10 @@ class FloatingDrawerButtonWithAnimation extends StatefulWidget {
   });
 
   @override
-  State<FloatingDrawerButtonWithAnimation> createState() =>
-      _FloatingDrawerButtonWithAnimationState();
+  State<FloatingDrawerButtonWithAnimation> createState() => _FloatingDrawerButtonWithAnimationState();
 }
 
-class _FloatingDrawerButtonWithAnimationState
-    extends State<FloatingDrawerButtonWithAnimation>
+class _FloatingDrawerButtonWithAnimationState extends State<FloatingDrawerButtonWithAnimation>
     with SingleTickerProviderStateMixin {
   late AnimationController controller;
 
@@ -39,15 +36,17 @@ class _FloatingDrawerButtonWithAnimationState
 
   @override
   Widget build(BuildContext context) {
+    // Initialize SizeConfig
+    SizeConfig.init(context);
+    double buttonSize = SizeConfig.getWidth(75.0);
+
     return Flow(
-      delegate: FlowMenuDelegate(
-          controller: controller, itemCount: widget.items.length),
-      children:
-          widget.items.map<Widget>((item) => buildCustomItem(item)).toList(),
+      delegate: FlowMenuDelegate(controller: controller, itemCount: widget.items.length, buttonSize: buttonSize),
+      children: widget.items.map<Widget>((item) => buildCustomItem(item, buttonSize)).toList(),
     );
   }
 
-  Widget buildCustomItem(FloatingDrawerItem item) {
+  Widget buildCustomItem(FloatingDrawerItem item, double buttonSize) {
     return GestureDetector(
       onTap: () {
         // Call the onTap function defined in FloatingDrawerItem
@@ -69,14 +68,13 @@ class _FloatingDrawerButtonWithAnimationState
         decoration: BoxDecoration(
           color: item.color ?? Colors.grey.shade200,
           shape: BoxShape.circle,
-          border: Border.all(width: 0.5, color: Colors.white),
+          border: Border.all(width: SizeConfig.getWidth(0.5), color: Colors.white),
           image: item.imageUrl != null
-              ? DecorationImage(
-                  image: AssetImage(item.imageUrl!), fit: BoxFit.cover)
+              ? DecorationImage(image: AssetImage(item.imageUrl!), fit: BoxFit.cover)
               : null,
         ),
         child: item.icon != null
-            ? Icon(item.icon, size: 30, color: Colors.grey.shade700)
+            ? Icon(item.icon, size: SizeConfig.getIconSize(35.0), color: Colors.grey.shade700)
             : null,
       ),
     );
@@ -86,10 +84,12 @@ class _FloatingDrawerButtonWithAnimationState
 class FlowMenuDelegate extends FlowDelegate {
   final Animation<double> controller;
   final int itemCount;
+  final double buttonSize;
 
   const FlowMenuDelegate({
     required this.controller,
     required this.itemCount,
+    required this.buttonSize,
   }) : super(repaint: controller);
 
   @override
@@ -109,8 +109,7 @@ class FlowMenuDelegate extends FlowDelegate {
 
   @override
   bool shouldRepaint(FlowMenuDelegate oldDelegate) {
-    return controller != oldDelegate.controller ||
-        itemCount != oldDelegate.itemCount;
+    return controller != oldDelegate.controller || itemCount != oldDelegate.itemCount || buttonSize != oldDelegate.buttonSize;
   }
 }
 

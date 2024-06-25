@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:note_app/utils/size_configuration.dart';
 import 'package:note_app/widgets/my_text.dart';
 
 enum ErrorType {
@@ -13,11 +14,11 @@ class ErrorScreen extends StatelessWidget {
   final VoidCallback? notFound404GoBack;
 
   const ErrorScreen({
-    super.key, // Corrected parameter name
+    Key? key, // Corrected parameter name
     required this.errorType,
     this.noInternetRetry,
     this.notFound404GoBack,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -43,53 +44,58 @@ class ErrorScreen extends StatelessWidget {
 
     return Scaffold(
       body: Container(
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
-        decoration: const BoxDecoration(
+        height: SizeConfig.screenHeight,
+        width: SizeConfig.screenWidth,
+        decoration: BoxDecoration(
           image: DecorationImage(
-              image: AssetImage("assets/images/ab_bg_w_light.png"),
-              fit: BoxFit.cover),
+            image: AssetImage("assets/images/ab_bg_w_light.png"),
+            fit: BoxFit.cover,
+          ),
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const MyText(
+            MyText(
               "Ooopss...!",
               style: TextStyle(
-                fontSize: 50,
+                fontSize: SizeConfig.getFontSize(50),
                 fontWeight: FontWeight.w700,
                 color: Colors.black,
               ),
             ),
-            SvgPicture.asset(height: 340, svgIconPath),
-            const SizedBox(height: 40),
+            SizedBox(height: SizeConfig.getHeight(40)),
+            SvgPicture.asset(
+              svgIconPath,
+              height: SizeConfig.getHeight(340),
+            ),
+            SizedBox(height: SizeConfig.getHeight(40)),
             MyText(
               errorHeader,
-              style: const TextStyle(
-                fontSize: 23,
+              style: TextStyle(
+                fontSize: SizeConfig.getFontSize(23),
                 fontWeight: FontWeight.w700,
                 color: Colors.black,
               ),
             ),
-            const SizedBox(height: 20),
-            const MyText(
+            SizedBox(height: SizeConfig.getHeight(20)),
+            MyText(
               "We're sorry,",
               style: TextStyle(
-                fontSize: 16,
+                fontSize: SizeConfig.getFontSize(16),
                 fontWeight: FontWeight.w500,
                 color: Colors.black,
               ),
             ),
-            const SizedBox(height: 2),
+            SizedBox(height: SizeConfig.getHeight(2)),
             MyText(
               errorBody,
-              style: const TextStyle(
-                fontSize: 14,
+              style: TextStyle(
+                fontSize: SizeConfig.getFontSize(14),
                 fontWeight: FontWeight.w400,
                 color: Colors.black,
               ),
             ),
-            const SizedBox(height: 80),
+            SizedBox(height: SizeConfig.getHeight(80)),
             actionButton,
           ],
         ),
@@ -101,24 +107,29 @@ class ErrorScreen extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 25,
-          vertical: 13,
+        padding: EdgeInsets.symmetric(
+          horizontal: SizeConfig.getWidth(25),
+          vertical: SizeConfig.getHeight(13),
         ),
         decoration: BoxDecoration(
           color: Colors.black,
-          borderRadius: BorderRadius.circular(15),
+          borderRadius: BorderRadius.circular(SizeConfig.getWidth(15)),
           boxShadow: [
             BoxShadow(
               color: Colors.grey.shade600,
               offset: const Offset(0.0, 10.0),
-              blurRadius: 10.0,
-              spreadRadius: -5.0,
+              blurRadius: SizeConfig.getWidth(10),
+              spreadRadius: -SizeConfig.getWidth(5),
             ),
           ],
         ),
-        child:
-            MyText(title, style: const TextStyle(color: Colors.white, fontSize: 19)),
+        child: MyText(
+          title,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: SizeConfig.getFontSize(19),
+          ),
+        ),
       ),
     );
   }
