@@ -107,4 +107,4 @@ This project is licensed under the MIT License. See the [MIT License](LICENSE) f
 For any inquiries or feedback, please contact,
 
 - Email: shinasnajeerkoya@gmail.com
-- GitHub: https://github.com/ShinasKoya00
+- GitHub: https://github.com/ShinasNajeerKoya
